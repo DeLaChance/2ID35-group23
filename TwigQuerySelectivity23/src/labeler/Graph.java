@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package labeler;
 
 import java.util.ArrayList;
@@ -11,8 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
- * @author lucien
+ * TODO: Description
  */
 public class Graph {
     
@@ -25,6 +19,7 @@ public class Graph {
     
     }
     
+    //Constructor which sets the initial values of the Graph like the nodes and the edges.
     public Graph(HashMap<Integer, Node> nodes, HashMap<Integer, ArrayList<Edge>> inEdges,
             HashMap<Integer, ArrayList<Edge>> outEdges)
     {
@@ -33,6 +28,7 @@ public class Graph {
         this.outEdges = outEdges;
     }
     
+    //Add a node to the graph. Also the edges are added to this specific new node.
     public void addNode(Node node)
     {
         if( !nodes.containsKey(node.getId()) )
@@ -44,6 +40,7 @@ public class Graph {
         }
     }
     
+    //Add @edge to the graph.
     public void addEdge(Edge edge)
     {
         if( nodes.containsKey(edge.getLeft()) && nodes.containsKey(edge.getRight()) ) 
@@ -57,6 +54,7 @@ public class Graph {
         }
     }
     
+    //Returns the list of edges which goes to node with id @id
     public ArrayList<Edge> getInNeighbours(Integer id)
     {
         ArrayList<Edge> inE = new ArrayList<>();
@@ -69,7 +67,7 @@ public class Graph {
         return inE;
     }
     
-    
+    //Returns the list of edges which goes from node with id @id
     public ArrayList<Edge> getOutNeighbours(Integer id)
     {
         ArrayList<Edge> outE = new ArrayList<>();
@@ -82,11 +80,13 @@ public class Graph {
         return outE;
     }
     
+    //Returns all nodes of the graph.
     public Set<Integer> getNodes()
     {
         return this.nodes.keySet();
     }
     
+    //Returns a node with id @vkey
     public Node getNode(Integer vkey)
     {
         if( this.nodes.containsKey(vkey) )

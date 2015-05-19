@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package labeler;
 
 import java.util.ArrayList;
@@ -10,8 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- *
- * @author lucien
+ * This class does the prime labeling part in the algorithm.
  */
 public class PrimeLabeler {
     
@@ -19,6 +13,7 @@ public class PrimeLabeler {
     private static Integer currentMax = -1;
     
     
+    //This method generates the next prime number available and returns this.
     private static long genNextPrime(long n)
     {
         long nextPrime = n + 1;
@@ -30,6 +25,7 @@ public class PrimeLabeler {
         return nextPrime;
     }
     
+    //
     private static boolean isPrime(long n)
     {
         long bound = (long) Math.ceil(Math.sqrt(n));
@@ -94,7 +90,13 @@ public class PrimeLabeler {
         return al;
     }
     
+<<<<<<< HEAD
     public static HashMap<Integer, ArrayList<Integer>> getPrimeLabeledGraph(Graph G)
+=======
+    //TODO: return something
+    //Generates a graph based on @G which is prime labeled.
+    public static void getPrimeLabeledGraph(Graph G)
+>>>>>>> ef9e2bb6d9ea5c738c719e86f97bac023a71b5a3
     {
         primeLabelperNode = new HashMap<Integer, ArrayList<Integer>>();
         ArrayList<Integer> al = getTopologicalOrder(G);
@@ -111,6 +113,7 @@ public class PrimeLabeler {
             
             // v is a leaf
             ArrayList<Edge> outE = G.getOutNeighbours(vkey);
+            //if outE.size() == 0, than this edge is a leaf.
             if( outE.size() == 0 )
             {
                 currentMax += 1;
@@ -159,7 +162,12 @@ public class PrimeLabeler {
         return list;
     }
     
+<<<<<<< HEAD
     private static ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
+=======
+    //Generates the product of two Prime numbers.
+    private ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
+>>>>>>> ef9e2bb6d9ea5c738c719e86f97bac023a71b5a3
     {
         int max = Math.max(al1.size(), al2.size());
         int min = Math.min(al1.size(), al2.size());
@@ -190,5 +198,4 @@ public class PrimeLabeler {
         
         return al3;
     }
-    
 }

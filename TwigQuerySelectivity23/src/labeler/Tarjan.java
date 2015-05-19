@@ -12,8 +12,7 @@ import java.util.Stack;
 import org.javatuples.Triplet;
 
 /**
- *
- * @author lucien
+ * TODO: Documentation
  */
 public class Tarjan {
     
@@ -22,6 +21,7 @@ public class Tarjan {
     static Stack S;
     static ArrayList<HashSet<Integer>> SCCs;
     
+    //Generates a Tarjan Graph from a given Graph @G
     public static Graph createTarjanGraph(Graph G)
     {
         ArrayList<HashSet<Integer>> SCCs = runTarjan(G);

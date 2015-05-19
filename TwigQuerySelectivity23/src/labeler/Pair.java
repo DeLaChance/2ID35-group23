@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package labeler;
+ackage labeler;
 
 public class Pair<A, B> {
     private A first;
@@ -42,18 +37,22 @@ public class Pair<A, B> {
            return "(" + first + ", " + second + ")"; 
     }
 
+	//Returns the first object of the pair
     public A getFirst() {
     	return first;
     }
-
+    
+	//Sets the first object of the pair
     public void setFirst(A first) {
     	this.first = first;
     }
 
+	//Returns the second object of the pair
     public B getSecond() {
     	return second;
     }
 
+	//Sets the second object of the pair
     public void setSecond(B second) {
     	this.second = second;
     }
