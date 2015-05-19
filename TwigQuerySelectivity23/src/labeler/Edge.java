@@ -1,32 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package labeler;
 
 /**
- *
- * @author lucien
+ * TODO: Documentation
  */
 class Edge {
     private Pair<Integer,Integer> edge;
     
+    //Constructor which initialize the edge.
     public Edge(Pair<Integer,Integer> edge)
     {
         this.edge = edge;
     }
     
+    //Get the left neighbour of the edge.
     public Integer getLeft()
     {
         return this.edge.getFirst();
     }
     
+    //Get the right neighbour of the edge.
     public Integer getRight() 
     {
         return this.edge.getSecond();
     }    
     
+    //
     public Edge reverse()
     {
         Integer first = this.edge.getFirst();
