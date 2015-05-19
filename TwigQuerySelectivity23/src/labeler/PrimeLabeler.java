@@ -44,60 +44,68 @@ public class PrimeLabeler {
         return true;
     }
     
-    private static ArrayList<Integer> getTopologicalOrder(Graph G)
+    public static ArrayList<Integer> getTopologicalOrder(Graph G)
     {
         ArrayList<Integer> al = new ArrayList<Integer>();
         ArrayList<Integer> S = new ArrayList<Integer>();
-        HashSet<Edge> isRemoved = new HashSet<Edge>();
+        HashSet<Integer> isRemoved = new HashSet<Integer>();
         
         for(Integer vkey : G.getNodes() )
         {
             if( G.getInNeighbours(vkey).size() == 0)
             {
-                S.add(vkey);
+                S.add(vkey);              
             }
         }
         
         while(S.size() > 0)
         {
-            Integer s = S.get(0);
-            al.add(s);
-            ArrayList<Edge> outE = G.getOutNeighbours(s);
-            
-            for(Edge e : outE)
+            Integer s = S.remove(0);
+            if( !isRemoved.contains(s) )
             {
-                isRemoved.add(e);
-                Integer right = e.getRight();
-                ArrayList<Edge> inE = G.getInNeighbours(right);
-                
-                boolean hasNoEdges = true;
-                for(Edge e2 : inE)
+                isRemoved.add(s);
+                al.add(s);
+                ArrayList<Edge> outE = G.getOutNeighbours(s);
+
+                for(Edge e : outE)
                 {
-                    if( !isRemoved.contains(e) )
+                    Integer right = e.getRight();
+                    ArrayList<Edge> inE = G.getInNeighbours(right);
+
+                    boolean hasNoEdges = true;
+                    for(Edge e2 : inE)
                     {
-                        hasNoEdges = false;
+                        Integer right2 = e2.getRight();
+                        if( !isRemoved.contains(right2) )
+                        {
+                            hasNoEdges = false;
+                        }
+                    }
+
+                    if( hasNoEdges )
+                    {
+                        S.add(right);
                     }
                 }
-                
-                if( hasNoEdges )
-                {
-                    S.add(right);
-                }
             }
-            
             
         }
         
         return al;
     }
     
-    public static void getPrimeLabeledGraph(Graph G)
+    public static HashMap<Integer, ArrayList<Integer>> getPrimeLabeledGraph(Graph G)
     {
         primeLabelperNode = new HashMap<Integer, ArrayList<Integer>>();
         ArrayList<Integer> al = getTopologicalOrder(G);
         
+        for(Integer vkey : G.getNodes())
+        {
+            primeLabelperNode.put(vkey, new ArrayList<Integer>());
+        }
+        
         // reverse topoligical order
-        for(int i = al.size()-1; i > 0; i--)
+        for(int i = al.size()-1; i >= 0; i--)
         {
             Integer vkey = al.get(i);
             
@@ -113,23 +121,35 @@ public class PrimeLabeler {
                 boolean allHaveMultipleParents = true;
                 for(Edge e : outE)
                 {
+                    // n.l = n.l * c.l
                     Integer right = e.getRight();
+                    ArrayList<Integer> leftVector = primeLabelperNode.get(vkey);
+                    ArrayList<Integer> rightVector = primeLabelperNode.get(right);
+                    ArrayList<Integer> productPrimeVector = productPrimeVector(leftVector, rightVector);
+                    primeLabelperNode.put(vkey, productPrimeVector);    
                     
-                    
+                    // Check for multiple parents
+                    ArrayList<Edge> inE = G.getInNeighbours(right);
+                    allHaveMultipleParents = allHaveMultipleParents && (inE.size() >= 2);
                 }
                 
                 if( allHaveMultipleParents )
                 {
-                
+                    currentMax += 1;
+                    ArrayList<Integer> al1 = primeLabelperNode.get(vkey);
+                    ArrayList<Integer> productPrimeVector = productPrimeVector(buildNewPrimeVector(), al1);
+                    primeLabelperNode.put(vkey, productPrimeVector);
                 }
             }
         }
+        
+        return primeLabelperNode;
     }
     
     private static ArrayList<Integer> buildNewPrimeVector()
     {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for(int i = 0; i < currentMax-1; i++)
+        for(int i = 0; i < currentMax; i++)
         {
             list.add(0);
         }
@@ -139,13 +159,36 @@ public class PrimeLabeler {
         return list;
     }
     
-    private ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
+    private static ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
     {
-        int j = Math.max(al1.size(), al2.size());
-        for(int i = 0; i < j; i++)
+        int max = Math.max(al1.size(), al2.size());
+        int min = Math.min(al1.size(), al2.size());
+        ArrayList<Integer> al3 = new ArrayList<Integer>();
+        
+        for(int i = 0; i < max; i++)
         {
+            Integer j = 0;
             
+            if(i < al1.size())
+            {
+                if(al1.get(i) == 1)
+                {
+                    j = 1;
+                }
+            }
+            if( i < al2.size())
+            {
+                if(al2.get(i) == 1)
+                {
+                    j = 1;
+                }
+            }
+
+            al3.add(j);
+
         }
+        
+        return al3;
     }
     
 }
