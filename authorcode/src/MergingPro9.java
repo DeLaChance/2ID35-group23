@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /*
- * 本类从文件中读取label信息，不用每次都重新label，节省下label的时间
+ * The class reads the label information from the file, you do not always have to re-label, label savings time
  */
 public class MergingPro9 extends LabelGraphFromFile{
 
 	Integer[] COM;
-	byte[] array; //用以快速把第三部分的点的label中的COM元素抛掉
-	Table0 table; //从primitive 到 duplicated 的map
+	byte[] array; //The third part of the label for rapid point of the COM element throw away
+	Table0 table; //From primitive to duplicated the map
 	int dup_cid = 0; //duplicated cid
 	int interval_start = 0;
-	//ArrayList<Integer> AllCNode; //从duplicated 到 primitive 的map
+	//ArrayList<Integer> AllCNode; //From primitive duplicated to the map
 	int[] AllCNode;
 	int AllCNode_index = 0;
 
@@ -38,10 +38,10 @@ public class MergingPro9 extends LabelGraphFromFile{
 		System.out.println("file label use "+(time2-time1));
 	}
 	
-	//用以duplicate第一第二部分
+	//To duplicate the first and second part
 	public void duplication(DataVertex curVertex){
 		
-		//第一第二部分全zip过了，这里就全部unzip
+		//Full zip through the first and second portions, and here all unzip
 		//Huffman.unzip_CNeighbor(curVertex);
 
 		//开始duplication
@@ -56,7 +56,7 @@ public class MergingPro9 extends LabelGraphFromFile{
 	}
 	
 
-	//用以duplicate第三部分，因为第三部分是没有压缩过的，所以不用解压
+	//For the third part of duplicate, because the third part is not compressed, so do not unpack
 	public void duplication3(DataVertex curVertex){
 		
 		curVertex.CNeighbor_length = curVertex.CNeighbor.length;
@@ -74,7 +74,7 @@ public class MergingPro9 extends LabelGraphFromFile{
 		
 	}
 
-	//初始化COM集合，从文件中读取
+	//COM initialization set, read from a file
 	public void initCOM(int scaningfactor){
 		
 		try{
