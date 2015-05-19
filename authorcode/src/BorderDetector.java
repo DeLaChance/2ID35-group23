@@ -30,9 +30,9 @@ import java.util.Vector;
 public class BorderDetector extends DAG2{
 	
 	int leafnum = 0;
-	int position = 0; //position代表总共使用了多少个“素数”
+	int position = 0; //position On behalf of a total of how many "primes"
 	int largest_delta = 0;
-	HashMap<Integer, List<DataVertex> > adjList = new HashMap();//为了进行非递归版拓扑排序，搞了一个图的邻接链表
+	HashMap<Integer, List<DataVertex> > adjList = new HashMap();//For non-recursive version topological sort out a graph adjacency list
 	byte[] array1;
 	int ones_num;
 	
@@ -70,12 +70,12 @@ public class BorderDetector extends DAG2{
 	
 	
 	
-	//非递归版的拓扑排序
+	//Non-recursive version of topological sorting
 	public void DFSTopologySort2(){
 		
 		long time1 = System.currentTimeMillis();
 		
-		int index = 0; //临时变量，比如，点n的邻接链表，上次访问到了哪个位置
+		int index = 0; //Temporary variables, for example, point n adjacency list, which last visit to the location
 		int top = 0;
 		
 		DataVertex rootNode = this.root;
@@ -86,7 +86,7 @@ public class BorderDetector extends DAG2{
 		firstTmp.node.topology_visited = true;
 
 		stack.push(firstTmp);
-		top++; //标记stk的栈顶的，其实没多大用处
+		top++; //Mark the top of the stack, in fact, not much use
 		
 		List<DataVertex> list = adjList.get(rootNode.id);
 
@@ -128,7 +128,7 @@ public class BorderDetector extends DAG2{
 					break;
 				}
 				
-				index = curTmp.pos+1; //加1表示n节点的邻接链表的下一个
+				index = curTmp.pos+1; //Next add 1 represents n nodes adjacent to the list
 			}									
 		}
 		
@@ -139,7 +139,7 @@ public class BorderDetector extends DAG2{
 
 	public void labelGraph2(){
 		
-		//首先把adjList清空
+		//First, the adjList empty
 		//adjList.clear();
 		
 		
@@ -156,7 +156,7 @@ public class BorderDetector extends DAG2{
 			
 			List<DataVertex> outGoingNeighbour = this.getOutgoingAdjacentVertices(curVertex);
 		
-			if(outGoingNeighbour.size() == 0){//说明这是叶子节点
+			if(outGoingNeighbour.size() == 0){//Description This is a leaf node
 				curVertex.CNeighbor=new int[1];
 				curVertex.CNeighbor[0] = position;
 				curVertex.CNeighbor_length = 1;
@@ -168,12 +168,12 @@ public class BorderDetector extends DAG2{
 				count++;
 				nz++;
 				
-				//本来是不需要zip的，可是为了把label写到文件里，不能有的为明文，有的为zip过的，就干脆zip得了
+				//Originally zip is not required, but in order to label written to a file, not some plain text, and some had to zip, zip simply got
 				Huffman.zip_CNeighbor(curVertex);
 				curVertex.zipped = true;
 				
 			}
-			else{//说明是非叶节点
+			else{//Description non-leaf node
 								
 				childrenVectorlabelProduct11(curVertex);
 				
@@ -213,28 +213,27 @@ public class BorderDetector extends DAG2{
 		adjList.get(curNode.id).toArray(outgoingNodes);
 		if(outgoingNodes.length == 0){
 			
-			//如果是叶子节点，但应该没可能
+			//If the node is a leaf, but it should not possible
 			return;
 		}
 		else{
 			
-			//首先把array1清零,虽然文件存储的是素数，而不是01数组
-			//但是转成01数组之后会加快child product的速度
-			
-			//上一步用完的时候已经重置了array1了
+			//First, the array1 cleared, although file storage is a prime number, rather than 01 arrays
+			//But child product will accelerate the speed of rotation into the array after 01			
+			//Previous Spent time has reset the array1
 			/*for(int i=0; i<array1.length; i++){
 				array1[i] = 0;
 			}*/
 			
-			//也是个优化，为了避免最后一步
-			//把array1转成curNode的CNeighbor的时候,从头到尾遍历array1
+			//It is also optimized, in order to avoid the last step
+			// The array1 turn into curNode of CNeighbor time, from beginning to end traverse array1
 			int start = Integer.MAX_VALUE; int end = 0; 
 						
 			for(int i=0; i<outgoingNodes.length; i++){
 				
 				DataVertex curVertex = outgoingNodes[i];
 				
-				//现在要把curVertex的label整合到array1中去====开始
+				//Now, we curVertex the label into array1 go ==== start
 				if(curVertex.zipped){
 					
 					Huffman.unzip_CNeighbor(curVertex);
@@ -253,15 +252,15 @@ public class BorderDetector extends DAG2{
 						ones_num++;
 					}
 				}
-				//用完了之后要把curVertex的CNeighbor清空掉
+				//After running out of CNeighbor emptied out should curVertex
 				if(curVertex.zipped){
 					curVertex.CNeighbor = null;
 				}				
 				//现在要把curVertex的label整合到array1中去====结束				
 			}
 			
-			//把array1转成curNode的CNeighbor
-			curNode.CNeighbor = new int[ones_num+1]; //为了给后面再加个新素数留个空
+			//The array1 turn into curNode of CNeighbor
+			curNode.CNeighbor = new int[ones_num+1]; //To back plus a new prime leave empty
 			int pos = 0;
 			//for(int i=0; i<array1.length; i++){
 			for(int i=start; i<=end; i++){
@@ -269,7 +268,7 @@ public class BorderDetector extends DAG2{
 					curNode.CNeighbor[pos] = i;
 					pos++;
 					
-					//重置array1的这个元素，这样后面就不用单独去重置array1了
+					//Array1 reset this element, so do not go alone behind the reset array1
 					array1[i] = 0;
 				}
 			}
@@ -317,7 +316,7 @@ public class BorderDetector extends DAG2{
                     new BufferedOutputStream(   
                     new FileOutputStream(filename)));  
 			
-			//第一第二部分写压缩后的密文
+			//The first and second partial write compressed ciphertext
 			for(int i=0; i<start_of_third; i++){
 				
 				DataVertex curVertex = orderedVertexList[i];
@@ -362,7 +361,7 @@ public class BorderDetector extends DAG2{
 			new File(filename)));
 			
 			
-			//第三部分写不压缩的明文,抛掉COM之后的
+			//The third part of the write uncompressed plaintext, throw away after COM
 			for(int i=start_of_third; i<orderedVertexList.length; i++){
 				
 				DataVertex curVertex = orderedVertexList[i];
@@ -389,7 +388,7 @@ public class BorderDetector extends DAG2{
 	
 	public void outOrderFile(DataVertex[] orderedVertexList, String filename){
 		
-		//下面把orderedVertexList[i].id 输到order文件中
+		//Below the orderedVertexList [i] .id file input to order
 		try{
 			BufferedWriter out = new BufferedWriter(
 					new FileWriter(
@@ -407,7 +406,7 @@ public class BorderDetector extends DAG2{
 		}
 	}
 	
-	//初始化COM集合，从文件中读取
+	//COM initialization set, read from a file
 	public void initCOM(String filename){
 		
 		try{
@@ -438,7 +437,7 @@ public class BorderDetector extends DAG2{
 			tmpCOM.toArray(COM);						
 			System.out.println("COM has "+tmpCOM.size());
 			
-			//初始化array 0/1 数组=======开始
+			//Start array initialization array 0/1
 			array = new byte[this.idVertexMap.size()];
 			for(int i=0; i<array.length; i++){
 				array[i] = 0;
@@ -446,7 +445,7 @@ public class BorderDetector extends DAG2{
 			for(int i=0; i<COM.length; i++){
 				array[COM[i]] = 1;
 			}
-			//初始化array 0/1 数组=======结束
+			//Array initialization is complete array 0/1
 			
 		}catch(IOException e){System.out.println(e);}	
 		
@@ -475,7 +474,7 @@ public class BorderDetector extends DAG2{
 	    System.out.println("time used to label "+timeused+" ms");
 	 
 	    DataVertex[] input_graph = g.sortNodeByOneNum2();
-	    //输出CNeighbor的大小到文件中，好定位矩阵第三部分
+	    //CNeighbor size of the output to a file, the third part of good positioning matrix
 		for(int i=0; i<input_graph.length; i++){
 			System.out.println(i+" "+input_graph[i].CNeighbor_length);
 		}

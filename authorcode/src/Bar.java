@@ -20,11 +20,11 @@ public class Bar {
 	float mean_Y = -1;
 	
 	
-	//X方向上的bar会用到下面两个
+	//Bar X direction will use the following two
 	float largest_Y = -1; 
 	float least_Y = Float.MAX_VALUE;
 	
-	//Y方向上的bar会用到下面两个
+	//Bar Y direction will use the following two
 	float largest_X = -1;
 	float least_X = Float.MAX_VALUE;
 	
