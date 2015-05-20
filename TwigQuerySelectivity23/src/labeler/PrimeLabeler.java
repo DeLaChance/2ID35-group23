@@ -89,14 +89,10 @@ public class PrimeLabeler {
         
         return al;
     }
-    
-<<<<<<< HEAD
-    public static HashMap<Integer, ArrayList<Integer>> getPrimeLabeledGraph(Graph G)
-=======
+
     //TODO: return something
     //Generates a graph based on @G which is prime labeled.
-    public static void getPrimeLabeledGraph(Graph G)
->>>>>>> ef9e2bb6d9ea5c738c719e86f97bac023a71b5a3
+    public static HashMap<Integer, ArrayList<Integer>> getPrimeLabeledGraph(Graph G)
     {
         primeLabelperNode = new HashMap<Integer, ArrayList<Integer>>();
         ArrayList<Integer> al = getTopologicalOrder(G);
@@ -161,13 +157,9 @@ public class PrimeLabeler {
         
         return list;
     }
-    
-<<<<<<< HEAD
-    private static ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
-=======
+
     //Generates the product of two Prime numbers.
-    private ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
->>>>>>> ef9e2bb6d9ea5c738c719e86f97bac023a71b5a3
+    private static ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
     {
         int max = Math.max(al1.size(), al2.size());
         int min = Math.min(al1.size(), al2.size());

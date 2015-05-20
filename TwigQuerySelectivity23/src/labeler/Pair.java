@@ -1,4 +1,4 @@
-ackage labeler;
+package labeler;
 
 public class Pair<A, B> {
     private A first;
