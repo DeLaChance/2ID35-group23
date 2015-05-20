@@ -90,8 +90,6 @@ public class PrimeLabeler {
         return al;
     }
 
-    //TODO: return something
-    //Generates a graph based on @G which is prime labeled.
     public static HashMap<Integer, ArrayList<Integer>> getPrimeLabeledGraph(Graph G)
     {
         primeLabelperNode = new HashMap<Integer, ArrayList<Integer>>();
@@ -158,7 +156,6 @@ public class PrimeLabeler {
         return list;
     }
 
-    //Generates the product of two Prime numbers.
     private static ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
     {
         int max = Math.max(al1.size(), al2.size());
