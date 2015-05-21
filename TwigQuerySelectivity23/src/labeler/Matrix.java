@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * 
@@ -178,4 +179,12 @@ public class Matrix {
         return s;
     }
     
+	public ArrayList<Integer> getColumn(int n)
+	{
+		throw new NotImplementedException();
+	}
+	public ArrayList<Integer> getRow(int n)
+	{
+		return matrix.get(n);
+	}
 }
