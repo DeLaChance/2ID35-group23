@@ -89,7 +89,7 @@ public class PrimeLabeler {
         
         return al;
     }
-    
+
     public static HashMap<Integer, ArrayList<Integer>> getPrimeLabeledGraph(Graph G)
     {
         primeLabelperNode = new HashMap<Integer, ArrayList<Integer>>();
@@ -155,7 +155,7 @@ public class PrimeLabeler {
         
         return list;
     }
-    
+
     private static ArrayList<Integer> productPrimeVector(ArrayList<Integer> al1, ArrayList<Integer> al2)
     {
         int max = Math.max(al1.size(), al2.size());
