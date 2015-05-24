@@ -11,16 +11,17 @@ import labeler.Node;
  *
  * @author francois
  */
-public class Position
+public class C1PRow
 {
 	private Node node;
-    private int x,y;
+    private int fromColumnIndex;
+	private int toColumnIndex;
     
-    public Position(Node node, int x, int y)
+    public C1PRow(Node node, int fromColumnIndex, int toColumnIndex)
     {
         this.node = node;
-        this.x = x;
-        this.y = y;
+        this.fromColumnIndex = fromColumnIndex;
+        this.toColumnIndex = toColumnIndex;
     }
     
     public Node getNode()
@@ -28,13 +29,13 @@ public class Position
         return this.node;
     }
     
-    public int getX()
+    public int getFromColumnIndex()
     {
-        return this.x;
+        return this.fromColumnIndex;
     }
     
-    public int getY()
+    public int getToColumnIndex()
     {
-        return this.y;
+        return this.toColumnIndex;
     }
 }

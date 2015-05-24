@@ -21,8 +21,8 @@ public class C1P {
 		}
 	}
 	
-	public c1p.Matrix heuristic(labeler.Matrix inputMatrix) {
-		List<Row> matrix = new ArrayList<Row>();
+	public c1p.C1PMatrix heuristic(labeler.Matrix inputMatrix) {
+		Matrix matrix = new Matrix();
 		
 		Row firstRow = (Row)inputMatrix.getRow(0);
 		matrix.add(firstRow);
@@ -53,6 +53,50 @@ public class C1P {
 			matrix.sort(new OverlapComparator());
 		}
 		
+		//Create submatrix
+		Matrix subMatrix = new Matrix();
+		{
+			subMatrix.add(firstRow);
+			for(int i = 1; i < inputMatrix.getMatrix().size(); i++)
+			{
+				Row currentRow = (Row)inputMatrix.getRow(i);
+				
+				Matrix joined = new Matrix();
+				joined.addAll(subMatrix);
+				joined.add(currentRow);
+
+				if(isC1P(joined) ||
+						hasOverlap(currentRow, subMatrix) ||
+						containsRow(subMatrix, currentRow))
+				{
+					subMatrix = columnPartition(subMatrix, currentRow); //TODO: column partition
+				}
+			}
+		}
+		
+		return subMatrix; // + recursive(M - R)
+	}
+	
+	/**
+	 * Check if a matrix has C1P.
+	 */
+	private boolean isC1P(Matrix m) {
+		return false;
+	}
+	/**
+	 * Check if a row overlaps with a matrix.
+	 */
+	private boolean hasOverlap(Row r, Matrix m) {
+		return false;
+	}
+	/**
+	 * Check if row is contained in matrix.
+	 */
+	private boolean containsRow(Matrix m, Row r) {
+		return false;
+	}
+	
+	private Matrix columnPartition(Matrix subMatrix, Row r) {
 		return null;
 	}
 }

@@ -11,6 +11,6 @@ import java.util.ArrayList;
  *
  * @author francois
  */
-public class Matrix extends ArrayList<Row> {
+public class C1PMatrix extends ArrayList<C1PRow> {
 	
 }
