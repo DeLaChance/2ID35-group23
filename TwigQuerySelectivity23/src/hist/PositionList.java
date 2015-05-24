@@ -35,6 +35,25 @@ public class PositionList<P extends Position> extends TreeSet<P>
         return this.maxY;
     }
     
+    /**
+     * Returns number of datapoints p with p.x>=x and p.y<=y, use only for small scale!.
+     * 
+     * @param x
+     * @param y
+     * @return 
+     */
+    public int getExactCount(int x, int y)
+    {
+        int c = 0;
+        for(Position p : this)
+        {
+            if(p.getX() >= x && p.getY() <= y)
+                c++;
+        }
+        
+        return c;
+    }
+    
     @Override
     public boolean remove(Object o)
     {

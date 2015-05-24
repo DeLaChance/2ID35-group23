@@ -27,9 +27,9 @@ public class Cell extends Equidepth
         this.datapoints.add(p);
     }
     
-    public void generateHistogram()
+    public void rebuildHistogram()
     {
-        super.generateHistogram(this.datapoints);
+        super.rebuild(this.datapoints);
         this.histogramValid = true;
     }
     
@@ -43,7 +43,7 @@ public class Cell extends Equidepth
     public int getCount(int x, int y)
     {
         if(!this.histogramValid)
-            this.generateHistogram();
+            this.rebuildHistogram();
         
         return super.getCount(x, y);
     }
@@ -57,13 +57,9 @@ public class Cell extends Equidepth
      */
     public int getExactCount(int x, int y)
     {
-        int c = 0;
-        for(Position p : this.datapoints)
-        {
-            if(p.getX() >= x && p.getY() <= y)
-                c++;
-        }
+        if(!this.histogramValid)
+            this.rebuildHistogram();
         
-        return c;
+        return super.getCount(x, y, 2);
     }
 }

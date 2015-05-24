@@ -6,6 +6,9 @@
 
 package hist;
 
+import estimation.QueryPoint;
+import java.util.Iterator;
+
 /**
  *
  * @author huib
@@ -42,7 +45,7 @@ package hist;
  * 2 [B][C][d][e][f]
  * 
  */
-public class TriangleGrid<T>
+public class TriangleGrid<T> implements Iterable<T>
 {
     protected Ref[][] grid;
     private int maxY;
@@ -71,9 +74,11 @@ public class TriangleGrid<T>
     {
         checkInGrid(x,y);
         int[] p = convert(x,y);
-        try {
+        try
+        {
             return (T)this.grid[p[0]][p[1]].getV();
-        } catch(ArrayIndexOutOfBoundsException e)
+        }
+        catch(ArrayIndexOutOfBoundsException e)
         {
             throw new IllegalArgumentException("Position ("+x+","+y+")->("+p[0]+","+p[1]+") not in grid!?", e);
         }
@@ -85,7 +90,6 @@ public class TriangleGrid<T>
         int l = x/cellSize;
         // d= number of cells below of the cell containing y.
         int d = y/cellSize;
-        
         
         if(d < width/2)
             return new int[] {l, d + (width&1)};
@@ -110,6 +114,120 @@ public class TriangleGrid<T>
     private boolean isInGrid(int x, int y)
     {
         return x<y && y < maxY;
+    }
+
+    /**
+     * Iterates in no particular order.
+     * @return 
+     */
+    @Override
+    public Iterator<T> iterator()
+    {
+        return new Iterator<T>()
+            {
+                private int v=0,h=0;
+                @Override
+                public boolean hasNext()
+                {
+                    return h < grid.length;
+                }
+
+                @Override
+                public T next()
+                {
+                    T result = (T) grid[h][v].getV();
+                    
+                    v++;
+                    if(v == grid[h].length)
+                    {
+                        v = 0;
+                        h++;
+                    }
+                    
+                    return result;
+                }
+            };
+    }
+    
+    public Iterable<T> SignificantCells(PositionList<QueryPoint> QueryPoints)
+    {
+        return new Iterable<T>()
+        {
+            private PositionList<QueryPoint> qps = QueryPoints;
+            
+            @Override
+            public Iterator<T> iterator()
+            {
+                Iterator<QueryPoint> iterator = qps.iterator();
+                QueryPoint initialQp = null;
+                final int initialX, initialY;
+                if(iterator.hasNext())
+                {
+                    QueryPoint p = iterator.next();
+                    initialX = p.getX()/cellSize;
+                    initialY = (p.getY()+cellSize-1)/cellSize;
+                }
+                else
+                {
+                    initialX = width+1;
+                    initialY = width+1;
+                }
+                    
+                
+                return new Iterator<T>()
+                {
+                    private Iterator<QueryPoint> qpIt = iterator;
+                    private int x = initialX;
+                    private int y = initialY;
+                    private int cy= y;
+                    QueryPoint nextQp = initialQp;
+                    
+                    @Override
+                    public boolean hasNext()
+                    {
+                        return x > width;
+                    }
+
+                    @Override
+                    public T next()
+                    {
+                        T result = getCell(cellSize*x, cellSize*y);
+                        
+                        y--;
+                        
+                        if(y == x)
+                        {
+                            x++;
+                            y = cy;
+                            
+                            while(x == nextQp.getX()/cellSize)
+                            {
+                                if(y <= nextQp.getY()/cellSize)
+                                    cy = y = (nextQp.getY()+cellSize-1)/cellSize;
+
+                                if(iterator.hasNext())
+                                    nextQp = iterator.next();
+                                else
+                                    nextQp = null;
+                            }
+
+                            if(cy == x)
+                            {
+                                if(nextQp == null)
+                                    x = width+1;
+                                else
+                                {
+                                    x      = nextQp.getX()/cellSize;
+                                    cy = y = (nextQp.getY()+cellSize-1)/cellSize;
+                                }
+                            }
+                        }
+                        
+                        return result;
+                    }
+                };
+            }
+        };
     }
     
     private class Ref

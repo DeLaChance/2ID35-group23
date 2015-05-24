@@ -6,6 +6,7 @@
 
 package hist;
 
+import estimation.QueryPoint;
 import twigqueryselectivity23.TwigQuerySelectivity23;
 
 /**
@@ -14,7 +15,7 @@ import twigqueryselectivity23.TwigQuerySelectivity23;
  */
 public class Histogram extends TriangleGrid<Cell>
 {
-    public Histogram(PositionList<Position> datapoints)
+    public Histogram(PositionList<? extends Position> datapoints)
     {
         super(TwigQuerySelectivity23.HIST_GRID_WIDTH, datapoints.getMaxY());
         
@@ -22,11 +23,21 @@ public class Histogram extends TriangleGrid<Cell>
         this.populateCells(datapoints);
     }
     
-    private void populateCells(PositionList<Position> datapoints)
+    public void estimateCount(PositionList<QueryPoint> qps)
+    {
+        
+    }
+    
+    private void populateCells(PositionList<? extends Position> datapoints)
     {
         for(Position p : datapoints)
         {
             this.getCell(p.getX(), p.getY()).add(p);
+        }
+        
+        for(Cell c : this)
+        {
+            c.rebuildHistogram();
         }
     }
 }

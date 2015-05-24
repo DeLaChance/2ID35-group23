@@ -12,8 +12,14 @@ package hist;
  */
 public class DiagonalCell extends Cell
 {
-    public DiagonalCell(int rho)
+    public DiagonalCell(int barCount)
     {
-        super(rho);
+        super(barCount);
+    }
+    
+    @Override
+    public int getCount(int x, int y)
+    {
+        return super.getCount(x, y, 1);
     }
 }

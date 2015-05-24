@@ -5,27 +5,16 @@
  */
 package estimation;
 
+import hist.Position;
+
 /**
  *
  * @author rik
  */
-class QueryPoint {
-    // min x, max y
-    private int x,y;
-    
+public class QueryPoint extends Position
+{
     public QueryPoint(int x, int y)
     {
-        this.x = x;
-        this.y = y;
-    }
-    
-    public int getX()
-    {
-        return x;
-    }
-    
-    public int getY()
-    {
-        return y;
+        super(x, y);
     }
 }
