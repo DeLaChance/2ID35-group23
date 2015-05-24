@@ -11,11 +11,40 @@ public class Matrix extends ArrayList<Row> {
 		return get(i);
 	}
 	
-	public static Matrix append(Matrix m1, Matrix m2) {
-		return m1;
+	public Matrix append(Matrix m) {
+		//Resize the rows to contain the correct number of columns
+		{
+			int c1 = this.get(0).size();
+			int c2 = m.get(0).size();
+		
+			//Append 0s to end of each row of first matrix
+			for(int i = 0; i < c2; i++)
+			{
+				for(Row r : this)
+				{
+					r.add(0);
+				}
+			}
+
+			//Prepend 0s at the start of each row of the second matrix
+			for(int i = 0; i < c1; i++)
+			{
+				for(Row r : m)
+				{
+					r.add(0, 0);
+				}
+			}
+		}
+		
+		//Add rows so matrix has correct number of rows
+		this.addAll(m);
+		
+		return this;
 	}
 	
-	public static Matrix remove(Matrix m1, Matrix m2) {
-		return m1;
+	public Matrix remove(Matrix m) {
+		this.removeAll(m);
+		
+		return this;
 	}
 }
