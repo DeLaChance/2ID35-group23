@@ -1,8 +1,6 @@
 package c1p;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  *
@@ -15,12 +13,9 @@ public class C1P {
 			return a.getOverlap() < b.getOverlap() ? -1 : a.getOverlap() == b.getOverlap() ? 0 : 1;
 		}
 	}
-	
-	public Matrix heuristic(Matrix inputMatrix) {
-		Matrix matrix = new Matrix();
 		
+	public Matrix heuristic(Matrix inputMatrix) {
 		Row firstRow = inputMatrix.getRow(0);
-		matrix.add(firstRow);
 		
 		//Calculate overlap
 		{
@@ -38,14 +33,12 @@ public class C1P {
 					if(v1 && v2)
 						row.setOverlap(row.getOverlap() + 1);
 				}
-
-				matrix.add(row);
 			}
 		}
 		
 		//Sort rows on overlap
 		{
-			matrix.sort(new OverlapComparator());
+			inputMatrix.sort(new OverlapComparator());
 		}
 		
 		//Create submatrix
@@ -69,7 +62,7 @@ public class C1P {
 			}
 		}
 		
-		return Matrix.append(subMatrix, heuristic(Matrix.remove(inputMatrix, subMatrix)));
+		return subMatrix.append(heuristic(inputMatrix.remove(subMatrix)));
 	}
 	
 	/**
