@@ -6,8 +6,6 @@
 
 package hist;
 
-import c1p.Position;
-
 /**
  *
  * @author huib

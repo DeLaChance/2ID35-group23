@@ -1,22 +1,20 @@
 package c1p;
 
+import hist.Position;
 import labeler.Node;
 
 /**
  *
  * @author francois
  */
-public class C1PRow
+public class C1PRow extends Position
 {
 	private Node node;
-    private int fromColumnIndex;
-	private int toColumnIndex;
     
     public C1PRow(Node node, int fromColumnIndex, int toColumnIndex)
     {
+        super(fromColumnIndex, toColumnIndex);
         this.node = node;
-        this.fromColumnIndex = fromColumnIndex;
-        this.toColumnIndex = toColumnIndex;
     }
     
     public Node getNode()
@@ -26,11 +24,11 @@ public class C1PRow
     
     public int getFromColumnIndex()
     {
-        return this.fromColumnIndex;
+        return this.getX();
     }
     
     public int getToColumnIndex()
     {
-        return this.toColumnIndex;
+        return this.getY();
     }
 }

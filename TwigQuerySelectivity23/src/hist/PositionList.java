@@ -7,7 +7,6 @@
 package hist;
 
 import java.util.TreeSet;
-import c1p.Position;
 import java.util.Comparator;
 
 /**

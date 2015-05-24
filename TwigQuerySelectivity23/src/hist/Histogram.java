@@ -6,7 +6,6 @@
 
 package hist;
 
-import c1p.Position;
 import twigqueryselectivity23.TwigQuerySelectivity23;
 
 /**
