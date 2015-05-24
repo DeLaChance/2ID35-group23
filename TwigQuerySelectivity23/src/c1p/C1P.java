@@ -74,7 +74,7 @@ public class C1P {
 			}
 		}
 		
-		return subMatrix.append(heuristic(inputMatrix - subMatrix));
+		return Matrix.append(subMatrix, heuristic(Matrix.remove(inputMatrix, subMatrix)));
 	}
 	
 	/**

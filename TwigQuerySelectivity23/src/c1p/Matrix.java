@@ -16,7 +16,11 @@ public class Matrix extends ArrayList<Row> {
 		return get(i);
 	}
 	
-	public Matrix append(Matrix m1, Matrix m2) {
+	public static Matrix append(Matrix m1, Matrix m2) {
+		return m1;
+	}
+	
+	public static Matrix remove(Matrix m1, Matrix m2) {
 		return m1;
 	}
 }
