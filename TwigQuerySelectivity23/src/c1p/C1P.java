@@ -21,18 +21,18 @@ public class C1P {
 		}
 	}
 	
-	public c1p.C1PMatrix heuristic(labeler.Matrix inputMatrix) {
+	public Matrix heuristic(Matrix inputMatrix) {
 		Matrix matrix = new Matrix();
 		
-		Row firstRow = (Row)inputMatrix.getRow(0);
+		Row firstRow = inputMatrix.getRow(0);
 		matrix.add(firstRow);
 		
 		//Calculate overlap
 		{
 			//For each row except the first
-			for(int i = 1; i < inputMatrix.getMatrix().size(); i++)
+			for(int i = 1; i < inputMatrix.size(); i++)
 			{
-				Row row = (Row)inputMatrix.getRow(i);
+				Row row = inputMatrix.getRow(i);
 
 				//For each column
 				for(int j = 0; j < row.size(); i++)
@@ -57,7 +57,7 @@ public class C1P {
 		Matrix subMatrix = new Matrix();
 		{
 			subMatrix.add(firstRow);
-			for(int i = 1; i < inputMatrix.getMatrix().size(); i++)
+			for(int i = 1; i < inputMatrix.size(); i++)
 			{
 				Row currentRow = (Row)inputMatrix.getRow(i);
 				
@@ -69,12 +69,12 @@ public class C1P {
 						hasOverlap(currentRow, subMatrix) ||
 						containsRow(subMatrix, currentRow))
 				{
-					subMatrix = columnPartition(subMatrix, currentRow); //TODO: column partition
+					subMatrix = columnPartition(subMatrix, currentRow);
 				}
 			}
 		}
 		
-		return subMatrix; // + recursive(M - R)
+		return subMatrix.append(heuristic(inputMatrix - subMatrix));
 	}
 	
 	/**
