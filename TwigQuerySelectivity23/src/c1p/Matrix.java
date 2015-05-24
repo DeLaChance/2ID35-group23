@@ -43,6 +43,8 @@ public class Matrix extends ArrayList<Row> {
 	}
 	
 	public Matrix remove(Matrix m) {
-		return m;
+		this.removeAll(m);
+		
+		return this;
 	}
 }
