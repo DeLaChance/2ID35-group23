@@ -69,7 +69,27 @@ public class C1P {
 	 * Check if a matrix has C1P.
 	 */
 	private boolean isC1P(Matrix m) {
-		return false;
+		for(Row r : m)
+		{
+			//0: no ones detected yet
+			//1: start of one streak detected
+			//2: end of one streak detected
+			int a = 0;
+			
+			for(int i = 0; i < r.size(); i++)
+			{
+				int v = r.get(i);
+				
+				if(a == 0 && v > 0)
+					a++;
+				else if(a == 1 && v == 0)
+					a++;
+				else if(a == 2 && v > 0)
+					return false;
+			}
+		}
+		
+		return true;
 	}
 	/**
 	 * Check if a row overlaps with a matrix.
