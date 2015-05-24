@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package c1p;
 
 import java.util.ArrayList;
@@ -87,12 +82,34 @@ public class C1P {
 	 * Check if a row overlaps with a matrix.
 	 */
 	private boolean hasOverlap(Row r, Matrix m) {
+		for(int i = 0; i < m.size(); i++)
+		{
+			Row row = m.getRow(i);
+
+			//For each column
+			for(int j = 0; j < row.size(); i++)
+			{				
+				boolean v1 = (r.get(j) != 0);
+				boolean v2 = (row.get(j) != 0);
+
+				if(v1 && v2)
+					return true;
+			}
+		}
+		
 		return false;
 	}
 	/**
 	 * Check if row is contained in matrix.
 	 */
 	private boolean containsRow(Matrix m, Row r) {
+		for(int i = 0; i < m.size(); i++)
+		{
+			Row row = m.getRow(i);
+			if(r.equals(row))
+				return true;
+		}
+		
 		return false;
 	}
 	
