@@ -1,6 +1,8 @@
 package c1p;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  *
@@ -13,9 +15,12 @@ public class C1P {
 			return a.getOverlap() < b.getOverlap() ? -1 : a.getOverlap() == b.getOverlap() ? 0 : 1;
 		}
 	}
-		
+	
 	public Matrix heuristic(Matrix inputMatrix) {
+		Matrix matrix = new Matrix();
+		
 		Row firstRow = inputMatrix.getRow(0);
+		matrix.add(firstRow);
 		
 		//Calculate overlap
 		{
@@ -33,12 +38,14 @@ public class C1P {
 					if(v1 && v2)
 						row.setOverlap(row.getOverlap() + 1);
 				}
+
+				matrix.add(row);
 			}
 		}
 		
 		//Sort rows on overlap
 		{
-			inputMatrix.sort(new OverlapComparator());
+			matrix.sort(new OverlapComparator());
 		}
 		
 		//Create submatrix
@@ -62,34 +69,14 @@ public class C1P {
 			}
 		}
 		
-		return subMatrix.append(heuristic(inputMatrix.remove(subMatrix)));
+		return Matrix.append(subMatrix, heuristic(Matrix.remove(inputMatrix, subMatrix)));
 	}
 	
 	/**
 	 * Check if a matrix has C1P.
 	 */
 	private boolean isC1P(Matrix m) {
-		for(Row r : m)
-		{
-			//0: no ones detected yet
-			//1: start of one streak detected
-			//2: end of one streak detected
-			int a = 0;
-			
-			for(int i = 0; i < r.size(); i++)
-			{
-				int v = r.get(i);
-				
-				if(a == 0 && v > 0)
-					a++;
-				else if(a == 1 && v == 0)
-					a++;
-				else if(a == 2 && v > 0)
-					return false;
-			}
-		}
-		
-		return true;
+		return false;
 	}
 	/**
 	 * Check if a row overlaps with a matrix.
