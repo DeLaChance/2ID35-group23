@@ -7,26 +7,23 @@ import java.util.HashMap;
 */
 public class Node {
     
-    private HashMap<String,String> attributes;
+    private String tag;
     private int id;
     
-    //Constructor of the Node which sets the attributes of the node and its Id.
-    public Node(HashMap<String,String> attributes, int id) 
+    public Node(String tag, int id) 
     {
-        this.attributes = attributes;
+        this.tag = tag;
         this.id = id;
     }
     
-    //Set the attributes of the node.
-    public void setAttributes(HashMap<String,String> attributes) 
+    public void setTag(String tag) 
     {
-        this.attributes = attributes;
+        this.tag = tag;
     }
     
-    //Returns the attributes of a given node.
-    public HashMap<String,String> getAttributes()
+    public String getTag()
     {
-        return this.attributes;
+        return this.tag;
     }
     
     //Returns the Id of the node.

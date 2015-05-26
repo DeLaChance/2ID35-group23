@@ -13,10 +13,14 @@ public class Graph {
     private HashMap<Integer, Node> nodes = new HashMap<>();
     private HashMap<Integer, ArrayList<Edge>> inEdges = new HashMap<Integer, ArrayList<Edge>>();
     private HashMap<Integer, ArrayList<Edge>> outEdges = new HashMap<Integer, ArrayList<Edge>>();
+    private int maxId = -1;
     
     public Graph()
     {
-    
+        this.nodes = new HashMap<Integer, Node>();
+        this.inEdges = new HashMap<Integer, ArrayList<Edge>>();
+        this.outEdges = new HashMap<Integer, ArrayList<Edge>>();
+        this.maxId = -1;
     }
     
     //Constructor which sets the initial values of the Graph like the nodes and the edges.
@@ -34,13 +38,28 @@ public class Graph {
         if( !nodes.containsKey(node.getId()) )
         {
             nodes.put(node.getId(), node);
+            maxId += 1;
             
             inEdges.put(node.getId(), new ArrayList<>());
             outEdges.put(node.getId(), new ArrayList<>());
         }
     }
     
+    public int addNode(String tag)
+    {
+        maxId += 1;
+        Node node = new Node(tag, maxId);
+        
+        return maxId;
+    }
+    
     //Add @edge to the graph.
+    public void addEdge(Integer from, Integer to)
+    {
+        Edge edge = new Edge(new Pair(from, to));
+        this.addEdge(edge);
+    }
+    
     public void addEdge(Edge edge)
     {
         if( nodes.containsKey(edge.getLeft()) && nodes.containsKey(edge.getRight()) ) 
