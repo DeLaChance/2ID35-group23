@@ -13,6 +13,11 @@ import xml.XMLParser;
  */
 public class TwigQuerySelectivity23 {
 
+    // number of cells in x and y direction (total # cells: (HIST_GRID_WIDTH+1)*HIST_GRID_WIDTH/2 )
+    public static final int HIST_GRID_WIDTH = 100;
+    // number of bars in the equidepth histogram (rho = 1/HIST_CELL_BARS)
+    public static final int HIST_CELL_BARS  =  10;
+    
     /**
      * @param args the command line arguments
      */
