@@ -23,9 +23,28 @@ public class Histogram extends TriangleGrid<Cell>
         this.populateCells(datapoints);
     }
     
-    public void estimateCount(PositionList<QueryPoint> qps)
+    public int estimateCount(PositionList<QueryPoint> qps)
     {
+        int count = 0;
         
+        for(Cell c : this.getSignificantCells(qps))
+        {
+            count += c.getCount(qps);
+        }
+        
+        return count;
+    }
+    
+    public int determineCount(PositionList<QueryPoint> qps)
+    {
+        int count = 0;
+        
+        for(Cell c : this.getSignificantCells(qps))
+        {
+            count += c.getExactCount(qps);
+        }
+        
+        return count;
     }
     
     private void populateCells(PositionList<? extends Position> datapoints)

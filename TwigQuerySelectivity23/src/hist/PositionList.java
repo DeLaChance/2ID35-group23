@@ -6,6 +6,7 @@
 
 package hist;
 
+import estimation.QueryPoint;
 import java.util.TreeSet;
 import java.util.Comparator;
 
@@ -42,12 +43,21 @@ public class PositionList<P extends Position> extends TreeSet<P>
      * @param y
      * @return 
      */
-    public int getExactCount(int x, int y)
+    public int getExactCount(PositionList<QueryPoint> qps)
     {
         int c = 0;
         for(Position p : this)
         {
-            if(p.getX() >= x && p.getY() <= y)
+            boolean included = false;
+
+            for(QueryPoint qp : qps)
+            {
+                included = p.getX() >= qp.getX() && p.getY() <= qp.getY();
+                if(included)
+                    break;
+            }
+            
+            if(included)
                 c++;
         }
         

@@ -6,6 +6,8 @@
 
 package hist;
 
+import estimation.QueryPoint;
+
 /**
  *
  * @author huib
@@ -40,12 +42,12 @@ public class Cell extends Equidepth
      * @param y lower bound for y
      * @return estimated number of datapoints to the lower right of (x,y)
      */
-    public int getCount(int x, int y)
+    public int getCount(PositionList<QueryPoint> qps)
     {
         if(!this.histogramValid)
             this.rebuildHistogram();
         
-        return super.getCount(x, y);
+        return super.getCount(qps);
     }
     
     /**
@@ -55,11 +57,11 @@ public class Cell extends Equidepth
      * @param y lower bound for y
      * @return exact number of datapoints to the lower right of (x,y)
      */
-    public int getExactCount(int x, int y)
+    public int getExactCount(PositionList<QueryPoint> qps)
     {
         if(!this.histogramValid)
             this.rebuildHistogram();
         
-        return super.getCount(x, y, 2);
+        return super.getCount(qps, 2);
     }
 }

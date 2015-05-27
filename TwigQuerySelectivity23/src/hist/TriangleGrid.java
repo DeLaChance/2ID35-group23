@@ -149,7 +149,7 @@ public class TriangleGrid<T> implements Iterable<T>
             };
     }
     
-    public Iterable<T> SignificantCells(PositionList<QueryPoint> QueryPoints)
+    public Iterable<T> getSignificantCells(PositionList<QueryPoint> QueryPoints)
     {
         return new Iterable<T>()
         {

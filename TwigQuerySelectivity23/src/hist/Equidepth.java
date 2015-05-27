@@ -6,6 +6,8 @@
 
 package hist;
 
+import estimation.QueryPoint;
+
 /**
  *
  * @author huib
@@ -58,59 +60,106 @@ public class Equidepth
         return this.cellCount;
     }
     
-    public int getCount(int x, int y)
+    public int getCount(PositionList<QueryPoint> qps)
     {
-        return this.getCount(x, y, 0);
+        return this.getCount(qps, 0);
     }
     
-    public int getCount(int x, int y, int exactness)
+    public int getCount(PositionList<QueryPoint> qps, int exactness)
     {
-        if(x <= left && y >= upp) // all points included
+        boolean allPointsIncluded = false;
+        
+        for(QueryPoint qp : qps)
+        {
+            allPointsIncluded = qp.getX() <= left && qp.getY() >= upp;
+            if(allPointsIncluded)
+                break;
+        }
+        
+        if(allPointsIncluded)
             return getCellCount();
         else if(exactness == 0)
-            return getEstimatedCount(x, y);
+            return getEstimatedCount(qps);
         else if(exactness == 1)
-            return getAlmostExactCount(x, y);
+            return getAlmostExactCount(qps);
         else
-            return getExactCount(x, y);
+            return getExactCount(qps);
     }
     
-    private int getEstimatedCount(int x, int y)
+    private int getEstimatedCount(PositionList<QueryPoint> qps)
     {
         int count = 0;
         
         for(int i=0; i<bars.length; i++)
         {
-            if(bars[i].maxX >= x && bars[i].minY <= y)
+            boolean included = false;
+            
+            for(QueryPoint qp : qps)
+            {
+                included = bars[i].maxX >= qp.getX() && bars[i].minY <= qp.getY();
+                if(included)
+                    break;
+            }
+            
+            if(included)
                 count += barCount;
         }
         
         return count;
     }
     
-    private int getAlmostExactCount(int x, int y)
+    private int getAlmostExactCount(PositionList<QueryPoint> qps)
     {
         int count = 0;
         
         for(int i=0; i<bars.length; i++)
         {
-            if(bars[i].minX >= x && bars[i].maxY <= y)
+            boolean allIncluded = false;
+            
+            for(QueryPoint qp : qps)
+            {
+                allIncluded = bars[i].minX >= qp.getX() && bars[i].maxY <= qp.getY();
+                if(allIncluded)
+                    break;
+            }
+            
+            if(allIncluded)
                 count += barCount; // could be off by one when the datapoints could not be distributed evenly across all bars
-            else if(bars[i].maxX >= x && bars[i].minY <= y)
-                count += bars[i].getExactCount(x, y);
+            else
+            {
+                boolean included = false;
+
+                for(QueryPoint qp : qps)
+                {
+                    included = bars[i].maxX >= qp.getX() && bars[i].minY <= qp.getY();
+                    if(included)
+                        break;
+                }
+                if(included)
+                    count += bars[i].getExactCount(qps);
+            }
         }
         
         return count;
     }
     
-    private int getExactCount(int x, int y)
+    private int getExactCount(PositionList<QueryPoint> qps)
     {
         int count = 0;
         
         for(int i=0; i<bars.length; i++)
         {
-            if(bars[i].maxX >= x && bars[i].minY <= y)
-                count += bars[i].getExactCount(x, y);
+            boolean included = false;
+
+            for(QueryPoint qp : qps)
+            {
+                included = bars[i].maxX >= qp.getX() && bars[i].minY <= qp.getY();
+                if(included)
+                    break;
+            }
+            
+            if(included)
+                count += bars[i].getExactCount(qps);
         }
         
         return count;

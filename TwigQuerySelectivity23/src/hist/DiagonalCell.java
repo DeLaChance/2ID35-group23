@@ -6,6 +6,8 @@
 
 package hist;
 
+import estimation.QueryPoint;
+
 /**
  *
  * @author huib
@@ -18,8 +20,8 @@ public class DiagonalCell extends Cell
     }
     
     @Override
-    public int getCount(int x, int y)
+    public int getCount(PositionList<QueryPoint> qps)
     {
-        return super.getCount(x, y, 1);
+        return super.getCount(qps, 1);
     }
 }
