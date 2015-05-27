@@ -9,6 +9,9 @@ package estimation;
  *
  * @author rik
  */
-class FilterQuery {
-    
+class FilterQuery{
+    private String query;
+    FilterQuery(String query) {
+        this.query = query;
+    }
 }

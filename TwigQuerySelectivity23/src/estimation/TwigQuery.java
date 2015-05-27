@@ -9,6 +9,8 @@ package estimation;
  *
  * @author rik
  */
-class TwigQuery {
-    
+class TwigQuery extends Query{
+    TwigQuery(String query) {
+        super(query);
+    }
 }
