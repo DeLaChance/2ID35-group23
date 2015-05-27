@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import labeler.Edge;
 import labeler.Node;
+import labeler.Graph;
 
 public class XMLParser {
     String xmlFile = null;
@@ -25,9 +26,11 @@ public class XMLParser {
     Element root = null;
     NodeList children = null;
     int nodeId = 0;
+    Graph g;
     
     public void XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
         xmlFile = "../datasets/xmark-sf"+scaningfactor+".xml";
+        g = new Graph();
         parseXmlFile();
     }
     
@@ -55,6 +58,8 @@ public class XMLParser {
             }catch(IOException ioe) {
                     ioe.printStackTrace();
             }
+            
+            
             
             parseDocument(children, nodeId);
     }
@@ -87,16 +92,13 @@ public class XMLParser {
                     for(int i = 0 ; i < newList.getLength();i++) {
                             //child is the current handled node.
                             Element child = (Element)newList.item(i);
-                            //childId is the Id of the handled node.
-                            int childId = parentNodeId++;
-                            String childName = child.getNodeName();
-                            String nodeAttributes = getTextValue(child, childName);
-                            
-                            //Create node.
-                            createNode(nodeAttributes, childId);
+                            //Get tag from child
+                            String tag = child.getTagName();
+                            //Create new node
+                            int childId = g.addNode(tag);
 
                             //create Edge from parent to child
-                            createEdge(parentNodeId, childId);
+                            g.addEdge(parentNodeId, childId);
                             
                             //Take childeren of current node if exists.
                             if(child.getChildNodes().getLength() > 0) {
@@ -118,16 +120,6 @@ public class XMLParser {
 
 		return textVal;
 	}
-    
-    public void createNode(HashMap<String,String> attributes, int id) {
-        Node node = new Node(attributes, id);
-        nodes.add(node);
-    }
-    
-    public void createEdge(int parentId, int childId) {
-        Edge edge = new Edge(parentId, childId);
-        edges.add(edges);
-    }
     
     public List<Node> returnNodes() {
         return nodes;
