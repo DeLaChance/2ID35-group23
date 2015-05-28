@@ -17,4 +17,14 @@ public class QueryPoint extends Position
     {
         super(x, y);
     }
+    
+    /**
+     * Returns whether the current query point is a child of potentialParent
+     * @param potentialParent
+     * @return 
+     */
+    public boolean isChild(QueryPoint potentialParent) {
+        return this.getX() >= potentialParent.getX() &&
+                this.getY() >= potentialParent.getY();
+    }
 }

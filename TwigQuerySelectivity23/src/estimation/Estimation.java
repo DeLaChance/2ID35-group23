@@ -17,23 +17,20 @@ public class Estimation {
 
     private int topDown(Query query, Set<QueryPoint> points, Graph g) {
         //Case 1: //A/p' => A is a tag
-        if(query.containsNextQuery()) {
+        if (query.containsNextQuery()) {
             Set<QueryPoint> nextPoints = estimateIntermediate(query.getStep(), points);
             return topDown(query.getNextQuery(), nextPoints, g);
-        }
-        else if(!query.containsFilter() && !query.containsNextQuery()) {
+        } else if (!query.containsFilter() && !query.containsNextQuery()) {
             return estimateCount(query.getStep(), points);
-        }
-        else if(query.containsFilter() && query.containsNextQuery()) {
+        } else if (query.containsFilter() && query.containsNextQuery()) {
             Set<QueryPoint> filteredPoints = bottomUp(query.getFilter(), null, g);
             Set<QueryPoint> nextPoints = estimateIntermediate(query.getStep(), points);
-            for(QueryPoint point : nextPoints) {
-                if(!atRightBottom(point, filteredPoints)) {
+            for (QueryPoint point : nextPoints) {
+                if (!atRightBottom(point, filteredPoints)) {
                     nextPoints.remove(point);
                 }
             }
-        }
-        else if(query.containsFilter()) {
+        } else if (query.containsFilter()) {
             Set<QueryPoint> filteredPoints = bottomUp(query.getFilter(), null, g);
             return estimateCountWithQf(query.getStep(), points, filteredPoints);
         }
@@ -42,34 +39,35 @@ public class Estimation {
     }
 
     private Set<QueryPoint> bottomUp(Query q, Set<QueryPoint> points, Graph g) {
-        if(!q.containsNextQuery()) {
+        if (!q.containsNextQuery()) {
             return estimateIntermediateReverse(q.getStep(), points, g);
-        }
-        else if(q.containsNextQuery()) {
-           Set<QueryPoint> intermediate = estimateIntermediateReverse(q.getStep(), points, g);
-           return bottomUp(q.getNextQuery(), intermediate, g);
-        }
-        else if(q.containsFilter() && !q.containsNextQuery()) {
+        } else if (q.containsNextQuery()) {
+            Set<QueryPoint> intermediate = estimateIntermediateReverse(q.getStep(), points, g);
+            return bottomUp(q.getNextQuery(), intermediate, g);
+        } else if (q.containsFilter() && !q.containsNextQuery()) {
             Set<QueryPoint> intermediatePoints = bottomUp(q.getFilter(), points, g);
             Set<QueryPoint> returnPoints = new HashSet<QueryPoint>();
-            for(QueryPoint x : points) {
-                for(QueryPoint y: intermediatePoints) {
-                    //IF y is descendant of x, add to returnpoints
+            for (QueryPoint x : points) {
+                for (QueryPoint y : intermediatePoints) {
+                    if (y.isChild(x)) {
+                        returnPoints.add(y);
+                    }
                 }
             }
-            return estimateIntermediateReverse(q.getStep(), points, g);            
-        }
-        else{
+            return estimateIntermediateReverse(q.getStep(), returnPoints, g);
+        } else {
             Set<QueryPoint> firstFilter = bottomUp(q.getFilter(), points, g);
             Set<QueryPoint> intermediatePoints = new HashSet<QueryPoint>();
-            for(QueryPoint x : points) {
-                for(QueryPoint y: firstFilter) {
-                    //IF y is descendant of x, add to intermediatePoints
+            for (QueryPoint x : points) {
+                for (QueryPoint y : firstFilter) {
+                    if (y.isChild(x)) {
+                        intermediatePoints.add(y);
+                    }
                 }
             }
             Set<QueryPoint> finalPoints = estimateIntermediateReverse(q.getStep(), intermediatePoints, g);
             return bottomUp(q.getFilter(), finalPoints, g);
-            
+
         }
     }
 
@@ -77,11 +75,11 @@ public class Estimation {
         Set<QueryPoint> nextPoints = new HashSet<QueryPoint>();
         for (QueryPoint point : points) {
             //for each cell c bottom right of point
-                //if c in case I, II, III
+            //if c in case I, II, III
         }
         return nextPoints;
     }
-    
+
     private Set<QueryPoint> estimateIntermediateReverse(String queryStep, Set<QueryPoint> points, Graph g) {
         return null;
     }

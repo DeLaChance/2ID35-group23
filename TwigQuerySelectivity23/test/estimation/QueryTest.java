@@ -96,7 +96,7 @@ public class QueryTest {
     public void testContainsFilterWithFilter() {
         Query instance = new Query("//A[b]");
         boolean expResult = true;
-        boolean result = instance.containsNextQuery();
+        boolean result = instance.containsFilter();
         assertEquals(expResult, result);
     }
 
@@ -104,7 +104,7 @@ public class QueryTest {
     public void testContainsFilterWithNext() {
         Query instance = new Query("//A/c");
         boolean expResult = false;
-        boolean result = instance.containsNextQuery();
+        boolean result = instance.containsFilter();
         assertEquals(expResult, result);
     }
 
