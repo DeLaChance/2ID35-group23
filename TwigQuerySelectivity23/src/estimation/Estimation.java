@@ -41,8 +41,36 @@ public class Estimation {
         return 0;
     }
 
-    private Set<QueryPoint> bottomUp(FilterQuery q, Set<QueryPoint> P, Graph g) {
-        
+    private Set<QueryPoint> bottomUp(Query q, Set<QueryPoint> points, Graph g) {
+        if(!q.containsNextQuery()) {
+            return estimateIntermediateReverse(q.getStep(), points, g);
+        }
+        else if(q.containsNextQuery()) {
+           Set<QueryPoint> intermediate = estimateIntermediateReverse(q.getStep(), points, g);
+           return bottomUp(q.getNextQuery(), intermediate, g);
+        }
+        else if(q.containsFilter() && !q.containsNextQuery()) {
+            Set<QueryPoint> intermediatePoints = bottomUp(q.getFilter(), points, g);
+            Set<QueryPoint> returnPoints = new HashSet<QueryPoint>();
+            for(QueryPoint x : points) {
+                for(QueryPoint y: intermediatePoints) {
+                    //IF y is descendant of x, add to returnpoints
+                }
+            }
+            return estimateIntermediateReverse(q.getStep(), points, g);            
+        }
+        else{
+            Set<QueryPoint> firstFilter = bottomUp(q.getFilter(), points, g);
+            Set<QueryPoint> intermediatePoints = new HashSet<QueryPoint>();
+            for(QueryPoint x : points) {
+                for(QueryPoint y: firstFilter) {
+                    //IF y is descendant of x, add to intermediatePoints
+                }
+            }
+            Set<QueryPoint> finalPoints = estimateIntermediateReverse(q.getStep(), intermediatePoints, g);
+            return bottomUp(q.getFilter(), finalPoints, g);
+            
+        }
     }
 
     private Set<QueryPoint> estimateIntermediate(String queryStep, Set<QueryPoint> points) {
@@ -54,7 +82,7 @@ public class Estimation {
         return nextPoints;
     }
     
-    private Set<QueryPoint> estimateIntermediateReverse(String queryStep, Set<QueryPoint> points) {
+    private Set<QueryPoint> estimateIntermediateReverse(String queryStep, Set<QueryPoint> points, Graph g) {
         return null;
     }
 

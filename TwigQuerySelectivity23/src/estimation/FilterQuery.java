@@ -9,9 +9,8 @@ package estimation;
  *
  * @author rik
  */
-class FilterQuery{
-    private String query;
+class FilterQuery extends Query{
     FilterQuery(String query) {
-        this.query = query;
+        super(query);
     }
 }
