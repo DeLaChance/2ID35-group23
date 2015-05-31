@@ -16,6 +16,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import labeler.*;
+import static sun.security.jca.ProviderList.newList;
 
 public class XMLParser {
     String xmlFile = null;
@@ -30,7 +31,7 @@ public class XMLParser {
     public XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
         xmlFile = "../datasets/xmark-sf"+scaningfactor+".xml";
         g = new Graph();
-        printXmlFile();
+        readXmlFile();
     }
     
     /**
@@ -69,7 +70,7 @@ public class XMLParser {
      * @throws IOException
      * @throws ParserConfigurationException 
      */
-    private void printXmlFile() throws SAXException, IOException, ParserConfigurationException{
+    private void readXmlFile() throws SAXException, IOException, ParserConfigurationException{
             //get the factory
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -88,21 +89,29 @@ public class XMLParser {
                     ioe.printStackTrace();
             }
             
-            NodeList newList = children;
-            if(newList != null && newList.getLength() > 0) {
-                    for(int i = 0 ; i < newList.getLength() ; i++) {
-                        Node node = (Node) newList.item(i);
-                        //Element child = (Element)newList.item(i);
-                        System.out.println(node.getAttributes());
+            printXmlFile(children);
+    }
+    
+    private void printXmlFile(NodeList children) {
+        NodeList newList = children;
+        if(newList != null && newList.getLength() > 0) {
+                for(int i = 0 ; i < newList.getLength() ; i++) {
+                    //With getNodeName we can get the name tag.
+                    if(newList.item(i).getNodeName().equals("incategory")) {
+                        System.out.println("NodeName: " + newList.item(i).getNodeName());
+                        Element nextNode = (Element) newList.item(i);
+                        System.out.println("NodeValue: " + nextNode.getAttribute("category") + "\n");
                     }
-            }
+                    printXmlFile(newList.item(i).getChildNodes());
+                }
+        }
     }
     
     /**
      * Returns the root of the XML file.
      * @return the root of the XML file.
      */
-    private Element getRootElement() {
+    public Element getRootElement() {
         return root;
     }
     
@@ -110,7 +119,7 @@ public class XMLParser {
      * Returns the children of a given Element
      * @param Element the node for which you want to retrieve the children.
      */
-    private NodeList getChildren() {
+    public NodeList getChildren() {
         return children;
     }
     
