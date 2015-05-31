@@ -5,12 +5,12 @@ import java.util.HashMap;
 /**
 * TODO: Description
 */
-public class Node {
+public class GraphNode {
     
     private String tag;
     private int id;
     
-    public Node(String tag, int id) 
+    public GraphNode(String tag, int id) 
     {
         this.tag = tag;
         this.id = id;

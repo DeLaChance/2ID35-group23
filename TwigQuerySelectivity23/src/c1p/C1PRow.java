@@ -1,7 +1,7 @@
 package c1p;
 
 import hist.Position;
-import labeler.Node;
+import labeler.GraphNode;
 
 /**
  *
@@ -9,15 +9,15 @@ import labeler.Node;
  */
 public class C1PRow extends Position
 {
-	private Node node;
+	private GraphNode node;
     
-    public C1PRow(Node node, int fromColumnIndex, int toColumnIndex)
+    public C1PRow(GraphNode node, int fromColumnIndex, int toColumnIndex)
     {
         super(fromColumnIndex, toColumnIndex);
         this.node = node;
     }
     
-    public Node getNode()
+    public GraphNode getNode()
     {
         return this.node;
     }

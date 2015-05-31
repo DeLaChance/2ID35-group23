@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.Node;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,24 +20,17 @@ import labeler.*;
 public class XMLParser {
     String xmlFile = null;
     Document dom;
-    List<Node> nodes = null;
-    List<Edge> edges = null;
+    List<GraphNode> nodes = null;
+    List<GraphEdge> edges = null;
     Element root = null;
     NodeList children = null;
     int nodeId = 0;
     Graph g;
 
-    private XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
-        System.out.println("Ik was hier");
+    public XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
         xmlFile = "../datasets/xmark-sf"+scaningfactor+".xml";
         g = new Graph();
         printXmlFile();
-    }
-    
-    public void XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
-        xmlFile = "../datasets/xmark-sf"+scaningfactor+".xml";
-        g = new Graph();
-        parseXmlFile();
     }
     
     /**
@@ -97,8 +91,9 @@ public class XMLParser {
             NodeList newList = children;
             if(newList != null && newList.getLength() > 0) {
                     for(int i = 0 ; i < newList.getLength() ; i++) {
-                        Element child = (Element)newList.item(i);
-                        System.out.println(child.getTagName());
+                        Node node = (Node) newList.item(i);
+                        //Element child = (Element)newList.item(i);
+                        System.out.println(node.getAttributes());
                     }
             }
     }
@@ -160,16 +155,11 @@ public class XMLParser {
 		return textVal;
 	}
     
-    public List<Node> returnNodes() {
+    public List<GraphNode> returnNodes() {
         return nodes;
     }
     
-    public List<Edge> returnEdges() {
+    public List<GraphEdge> returnEdges() {
         return edges;
-    }
-    
-    public static void main(String [] args) throws SAXException, IOException, ParserConfigurationException {
-        System.out.println("Ik kom hier wel hoor");
-        XMLParser xmlParse = new XMLParser(0.4);
     }
 }

@@ -3,11 +3,11 @@ package labeler;
 /**
  * TODO: Documentation
  */
-public class Edge {
+public class GraphEdge {
     private Pair<Integer,Integer> edge;
     
     //Constructor which initialize the edge.
-    public Edge(Pair<Integer,Integer> edge)
+    public GraphEdge(Pair<Integer,Integer> edge)
     {
         this.edge = edge;
     }
@@ -25,12 +25,12 @@ public class Edge {
     }    
     
     //
-    public Edge reverse()
+    public GraphEdge reverse()
     {
         Integer first = this.edge.getFirst();
         Integer second = this.edge.getSecond();
         
-        Edge edge = new Edge(new Pair(second, first));
+        GraphEdge edge = new GraphEdge(new Pair(second, first));
         
         return edge;
     }

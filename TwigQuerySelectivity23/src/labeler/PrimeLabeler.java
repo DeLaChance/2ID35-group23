@@ -61,15 +61,15 @@ public class PrimeLabeler {
             {
                 isRemoved.add(s);
                 al.add(s);
-                ArrayList<Edge> outE = G.getOutNeighbours(s);
+                ArrayList<GraphEdge> outE = G.getOutNeighbours(s);
 
-                for(Edge e : outE)
+                for(GraphEdge e : outE)
                 {
                     Integer right = e.getRight();
-                    ArrayList<Edge> inE = G.getInNeighbours(right);
+                    ArrayList<GraphEdge> inE = G.getInNeighbours(right);
 
                     boolean hasNoEdges = true;
-                    for(Edge e2 : inE)
+                    for(GraphEdge e2 : inE)
                     {
                         Integer right2 = e2.getRight();
                         if( !isRemoved.contains(right2) )
@@ -106,7 +106,7 @@ public class PrimeLabeler {
             Integer vkey = al.get(i);
             
             // v is a leaf
-            ArrayList<Edge> outE = G.getOutNeighbours(vkey);
+            ArrayList<GraphEdge> outE = G.getOutNeighbours(vkey);
             //if outE.size() == 0, than this edge is a leaf.
             if( outE.size() == 0 )
             {
@@ -116,7 +116,7 @@ public class PrimeLabeler {
             else
             {
                 boolean allHaveMultipleParents = true;
-                for(Edge e : outE)
+                for(GraphEdge e : outE)
                 {
                     // n.l = n.l * c.l
                     Integer right = e.getRight();
@@ -126,7 +126,7 @@ public class PrimeLabeler {
                     primeLabelperNode.put(vkey, productPrimeVector);    
                     
                     // Check for multiple parents
-                    ArrayList<Edge> inE = G.getInNeighbours(right);
+                    ArrayList<GraphEdge> inE = G.getInNeighbours(right);
                     allHaveMultipleParents = allHaveMultipleParents && (inE.size() >= 2);
                 }
                 

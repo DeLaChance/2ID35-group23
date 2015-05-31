@@ -44,34 +44,34 @@ public class TarjanTest {
      */
     @Test
     public void testRunTarjan() {
-        Node[] nodes = new Node[8];
+        GraphNode[] nodes = new GraphNode[8];
         for(int i = 0; i < 8; i++)
-            nodes[i] = new Node(null, i+1);
+            nodes[i] = new GraphNode(null, i+1);
         
-        Edge[] edges = new Edge[16];
-        edges[0] = new Edge(new Pair(1,2));
-        edges[1] = new Edge(new Pair(2,3));
-        edges[2] = new Edge(new Pair(3,1));
-        edges[3] = new Edge(new Pair(4,2));
-        edges[4] = new Edge(new Pair(4,3));
-        edges[5] = new Edge(new Pair(4,5));
-        edges[6] = new Edge(new Pair(5,4));
-        edges[7] = new Edge(new Pair(5,6));
-        edges[8] = new Edge(new Pair(6,3));
-        edges[9] = new Edge(new Pair(5,6));
-        edges[10] = new Edge(new Pair(6,3));
-        edges[11] = new Edge(new Pair(6,7));
-        edges[12] = new Edge(new Pair(7,6));
-        edges[13] = new Edge(new Pair(8,7));
-        edges[14] = new Edge(new Pair(8,5));
-        edges[15] = new Edge(new Pair(8,8));
+        GraphEdge[] edges = new GraphEdge[16];
+        edges[0] = new GraphEdge(new Pair(1,2));
+        edges[1] = new GraphEdge(new Pair(2,3));
+        edges[2] = new GraphEdge(new Pair(3,1));
+        edges[3] = new GraphEdge(new Pair(4,2));
+        edges[4] = new GraphEdge(new Pair(4,3));
+        edges[5] = new GraphEdge(new Pair(4,5));
+        edges[6] = new GraphEdge(new Pair(5,4));
+        edges[7] = new GraphEdge(new Pair(5,6));
+        edges[8] = new GraphEdge(new Pair(6,3));
+        edges[9] = new GraphEdge(new Pair(5,6));
+        edges[10] = new GraphEdge(new Pair(6,3));
+        edges[11] = new GraphEdge(new Pair(6,7));
+        edges[12] = new GraphEdge(new Pair(7,6));
+        edges[13] = new GraphEdge(new Pair(8,7));
+        edges[14] = new GraphEdge(new Pair(8,5));
+        edges[15] = new GraphEdge(new Pair(8,8));
         
         Graph G = new Graph();
-        for(Node n : nodes)
+        for(GraphNode n : nodes)
         {
             G.addNode(n);
         }
-        for(Edge e : edges)
+        for(GraphEdge e : edges)
         {
             G.addEdge(e);
         }

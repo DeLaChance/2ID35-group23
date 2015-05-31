@@ -10,22 +10,22 @@ import java.util.Set;
  */
 public class Graph {
     
-    private HashMap<Integer, Node> nodes = new HashMap<>();
-    private HashMap<Integer, ArrayList<Edge>> inEdges = new HashMap<Integer, ArrayList<Edge>>();
-    private HashMap<Integer, ArrayList<Edge>> outEdges = new HashMap<Integer, ArrayList<Edge>>();
+    private HashMap<Integer, GraphNode> nodes = new HashMap<>();
+    private HashMap<Integer, ArrayList<GraphEdge>> inEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
+    private HashMap<Integer, ArrayList<GraphEdge>> outEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
     private int maxId = -1;
     
     public Graph()
     {
-        this.nodes = new HashMap<Integer, Node>();
-        this.inEdges = new HashMap<Integer, ArrayList<Edge>>();
-        this.outEdges = new HashMap<Integer, ArrayList<Edge>>();
+        this.nodes = new HashMap<Integer, GraphNode>();
+        this.inEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
+        this.outEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
         this.maxId = -1;
     }
     
     //Constructor which sets the initial values of the Graph like the nodes and the edges.
-    public Graph(HashMap<Integer, Node> nodes, HashMap<Integer, ArrayList<Edge>> inEdges,
-            HashMap<Integer, ArrayList<Edge>> outEdges)
+    public Graph(HashMap<Integer, GraphNode> nodes, HashMap<Integer, ArrayList<GraphEdge>> inEdges,
+            HashMap<Integer, ArrayList<GraphEdge>> outEdges)
     {
         this.nodes = nodes;
         this.inEdges = inEdges;
@@ -33,7 +33,7 @@ public class Graph {
     }
     
     //Add a node to the graph. Also the edges are added to this specific new node.
-    public void addNode(Node node)
+    public void addNode(GraphNode node)
     {
         if( !nodes.containsKey(node.getId()) )
         {
@@ -48,7 +48,7 @@ public class Graph {
     public int addNode(String tag)
     {
         maxId += 1;
-        Node node = new Node(tag, maxId);
+        GraphNode node = new GraphNode(tag, maxId);
         
         return maxId;
     }
@@ -56,17 +56,17 @@ public class Graph {
     //Add @edge to the graph.
     public void addEdge(Integer from, Integer to)
     {
-        Edge edge = new Edge(new Pair(from, to));
+        GraphEdge edge = new GraphEdge(new Pair(from, to));
         this.addEdge(edge);
     }
     
-    public void addEdge(Edge edge)
+    public void addEdge(GraphEdge edge)
     {
         if( nodes.containsKey(edge.getLeft()) && nodes.containsKey(edge.getRight()) ) 
         {
             // Both nodes of the edge need to be present in the graph
-            ArrayList<Edge> inE = inEdges.get(edge.getRight());
-            ArrayList<Edge> outE = outEdges.get(edge.getLeft());
+            ArrayList<GraphEdge> inE = inEdges.get(edge.getRight());
+            ArrayList<GraphEdge> outE = outEdges.get(edge.getLeft());
             
             inE.add(edge.reverse());
             outE.add(edge);
@@ -74,12 +74,12 @@ public class Graph {
     }
     
     //Returns the list of edges which goes to node with id @id
-    public ArrayList<Edge> getInNeighbours(Integer id)
+    public ArrayList<GraphEdge> getInNeighbours(Integer id)
     {
-        ArrayList<Edge> inE = new ArrayList<>();
+        ArrayList<GraphEdge> inE = new ArrayList<>();
         if( nodes.containsKey(id) )
         {
-            Node node = nodes.get(id);
+            GraphNode node = nodes.get(id);
             inE = inEdges.get(id);            
         }
         
@@ -87,12 +87,12 @@ public class Graph {
     }
     
     //Returns the list of edges which goes from node with id @id
-    public ArrayList<Edge> getOutNeighbours(Integer id)
+    public ArrayList<GraphEdge> getOutNeighbours(Integer id)
     {
-        ArrayList<Edge> outE = new ArrayList<>();
+        ArrayList<GraphEdge> outE = new ArrayList<>();
         if( nodes.containsKey(id) )
         {
-            Node node = nodes.get(id);
+            GraphNode node = nodes.get(id);
             outE = outEdges.get(id);            
         }
         
@@ -106,7 +106,7 @@ public class Graph {
     }
     
     //Returns a node with id @vkey
-    public Node getNode(Integer vkey)
+    public GraphNode getNode(Integer vkey)
     {
         if( this.nodes.containsKey(vkey) )
             return this.nodes.get(vkey);

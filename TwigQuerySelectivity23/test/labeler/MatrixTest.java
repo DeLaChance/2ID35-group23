@@ -44,27 +44,27 @@ public class MatrixTest {
      */
     @Test
     public void testGetMatrix() {
-        Node[] nodes = new Node[6];
+        GraphNode[] nodes = new GraphNode[6];
         for(int i = 0; i < 6; i++)
-            nodes[i] = new Node(null, i);
+            nodes[i] = new GraphNode(null, i);
         
-        Edge[] edges = new Edge[7];
-        edges[0] = new Edge(new Pair(0,1));
-        edges[1] = new Edge(new Pair(0,2));
-        edges[2] = new Edge(new Pair(1,3));
-        edges[3] = new Edge(new Pair(1,4));
-        edges[4] = new Edge(new Pair(2,3));
-        edges[5] = new Edge(new Pair(2,4));
-        edges[6] = new Edge(new Pair(5,2));
+        GraphEdge[] edges = new GraphEdge[7];
+        edges[0] = new GraphEdge(new Pair(0,1));
+        edges[1] = new GraphEdge(new Pair(0,2));
+        edges[2] = new GraphEdge(new Pair(1,3));
+        edges[3] = new GraphEdge(new Pair(1,4));
+        edges[4] = new GraphEdge(new Pair(2,3));
+        edges[5] = new GraphEdge(new Pair(2,4));
+        edges[6] = new GraphEdge(new Pair(5,2));
         
         Graph G = new Graph();
         
-        for(Node n : nodes)
+        for(GraphNode n : nodes)
         {
             G.addNode(n);
         }
         
-        for(Edge e : edges)
+        for(GraphEdge e : edges)
         {
             G.addEdge(e);
         }

@@ -27,12 +27,12 @@ public class Tarjan {
         ArrayList<HashSet<Integer>> SCCs = runTarjan(G);
         Graph G2 = new Graph();
         HashMap<Integer, ArrayList<Integer>> edges = new HashMap<Integer, ArrayList<Integer>>();
-        ArrayList<Node> nodes = new ArrayList<Node>();
+        ArrayList<GraphNode> nodes = new ArrayList<GraphNode>();
         int j = 0;
         
         for(HashSet<Integer> SCC : SCCs )
         {
-            Node n = new Node(null,j);
+            GraphNode n = new GraphNode(null,j);
             nodes.add(n);
             edges.put(j, new ArrayList<Integer>());
             j++;
@@ -43,8 +43,8 @@ public class Tarjan {
         {
             for(Integer vkey : SCC)
             {
-                ArrayList<Edge> outE = G.getOutNeighbours(vkey);
-                for(Edge e : outE)
+                ArrayList<GraphEdge> outE = G.getOutNeighbours(vkey);
+                for(GraphEdge e : outE)
                 {
                     Integer wkey = e.getRight();
                     
@@ -73,7 +73,7 @@ public class Tarjan {
             j++;
         }
         
-        for(Node n : nodes)
+        for(GraphNode n : nodes)
         {
             G2.addNode(n);
         }
@@ -83,7 +83,7 @@ public class Tarjan {
             ArrayList<Integer> E = edges.get(key);
             for(Integer key2 : E)
             {
-                Edge edge = new Edge(new Pair(key,key2));
+                GraphEdge edge = new GraphEdge(new Pair(key,key2));
                 G2.addEdge(edge);
             }
 
@@ -126,8 +126,8 @@ public class Tarjan {
         index += 1;
         S.push( vkey );
         
-        ArrayList<Edge> outE = G.getOutNeighbours(vkey);
-        for(Edge e : outE)
+        ArrayList<GraphEdge> outE = G.getOutNeighbours(vkey);
+        for(GraphEdge e : outE)
         {
             Integer wkey = e.getRight();
             if( !nodeData.containsKey(wkey) )
