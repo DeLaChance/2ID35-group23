@@ -1,4 +1,4 @@
-package labeler;
+package xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,9 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import labeler.Edge;
-import labeler.Node;
-import labeler.Graph;
+import labeler.*;
 
 public class XMLParser {
     String xmlFile = null;
@@ -27,6 +25,13 @@ public class XMLParser {
     NodeList children = null;
     int nodeId = 0;
     Graph g;
+
+    private XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
+        System.out.println("Ik was hier");
+        xmlFile = "../datasets/xmark-sf"+scaningfactor+".xml";
+        g = new Graph();
+        printXmlFile();
+    }
     
     public void XMLParser(double scaningfactor) throws SAXException, IOException, ParserConfigurationException {
         xmlFile = "../datasets/xmark-sf"+scaningfactor+".xml";
@@ -65,6 +70,40 @@ public class XMLParser {
     }
     
     /**
+     * Print the XML file
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException 
+     */
+    private void printXmlFile() throws SAXException, IOException, ParserConfigurationException{
+            //get the factory
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+            try {
+                    //Using factory get an instance of document builder
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    //parse using builder to get DOM representation of the XML file
+                    dom = db.parse(xmlFile);
+                    root = dom.getDocumentElement();  
+                    children = root.getChildNodes();
+            }catch(ParserConfigurationException pce) {
+                    pce.printStackTrace();
+            }catch(SAXException se) {
+                    se.printStackTrace();
+            }catch(IOException ioe) {
+                    ioe.printStackTrace();
+            }
+            
+            NodeList newList = children;
+            if(newList != null && newList.getLength() > 0) {
+                    for(int i = 0 ; i < newList.getLength() ; i++) {
+                        Element child = (Element)newList.item(i);
+                        System.out.println(child.getTagName());
+                    }
+            }
+    }
+    
+    /**
      * Returns the root of the XML file.
      * @return the root of the XML file.
      */
@@ -89,7 +128,7 @@ public class XMLParser {
     private void parseDocument(NodeList children, int parentNodeId){
             NodeList newList = children;
             if(newList != null && newList.getLength() > 0) {
-                    for(int i = 0 ; i < newList.getLength();i++) {
+                    for(int i = 0 ; i < newList.getLength() ; i++) {
                             //child is the current handled node.
                             Element child = (Element)newList.item(i);
                             //Get tag from child
@@ -127,5 +166,10 @@ public class XMLParser {
     
     public List<Edge> returnEdges() {
         return edges;
+    }
+    
+    public static void main(String [] args) throws SAXException, IOException, ParserConfigurationException {
+        System.out.println("Ik kom hier wel hoor");
+        XMLParser xmlParse = new XMLParser(0.4);
     }
 }

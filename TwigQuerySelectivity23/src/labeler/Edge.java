@@ -3,7 +3,7 @@ package labeler;
 /**
  * TODO: Documentation
  */
-class Edge {
+public class Edge {
     private Pair<Integer,Integer> edge;
     
     //Constructor which initialize the edge.
