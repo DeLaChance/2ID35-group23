@@ -8,7 +8,7 @@ package twigqueryselectivity23;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-import xml.XMLParser;
+import xml.XMLReader;
 
 
 
@@ -26,10 +26,14 @@ public class TwigQuerySelectivity23 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
+    public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, Exception {
         // TODO code application logic here
         //String fileLoc = "/home/lucien/Downloads/standard.xml" ;//args[0];
-        XMLParser xmlparser = new XMLParser(0.4);
+        try {
+            XMLReader xmlparser = new XMLReader(0.4);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
 }
