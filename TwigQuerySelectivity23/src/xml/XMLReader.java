@@ -14,6 +14,7 @@ public class XMLReader {
 
         parser.parse(new FileInputStream("../datasets/xmark-sf0.4.xml"), 
                      handler);
+        System.out.println("Maximum depth: " + handler.getMaximum());
     }
 
   public static void main(String[] args) throws Exception {

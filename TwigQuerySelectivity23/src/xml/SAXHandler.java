@@ -22,6 +22,9 @@ class SAXHandler extends DefaultHandler {
     GraphNode emp = null;
     String content = null;
     int depth = -1;
+    int prevChildId = 0;
+    int history[][];
+    public int maximum = 0;
 
     @Override
     //Triggered when the start of tag is found.
@@ -30,17 +33,17 @@ class SAXHandler extends DefaultHandler {
                              throws SAXException {
       if(!qName.equals("incategory")) {
           depth++;
+          if(depth > maximum) {
+              maximum = depth;
+          }
           System.out.println("Depth is one higher to: " + depth);
           System.out.println(qName);
+          int childId = g.addNode(qName);
       } else {
           //If it is an incategory tag, which should be a custom edge.
-          //System.out.println(attributes.getType(qName));
-          int childId = g.addNode(qName);
           depth++;
           System.out.println("Depth is one higher to: " + depth);
-          empList.clear();
           
-          empList.add(g.getNode(childId));
       }
 
       /*switch(qName){
@@ -66,4 +69,7 @@ class SAXHandler extends DefaultHandler {
 
     }
     
+    public int getMaximum() {
+        return maximum;
+    }
 }
