@@ -1,5 +1,6 @@
 package xml;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -10,13 +11,9 @@ public class XMLReader {
         SAXParserFactory parserFactor = SAXParserFactory.newInstance();
         SAXParser parser = parserFactor.newSAXParser();
         SAXHandler handler = new SAXHandler();
-        Document document;
 
-        try (InputStream stream = new FileInputStream("../datasets/xmark-sf0.4.xml")) {
-            document = dBuilder.parse(stream);
-        }
-        //parser.parse(ClassLoader.getSystemResourceAsStream("../datasets/xmark-sf0.4.xml"), 
-        //             handler);
+        parser.parse(new FileInputStream("../datasets/xmark-sf0.4.xml"), 
+                     handler);
     }
 
   public static void main(String[] args) throws Exception {
