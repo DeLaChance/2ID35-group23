@@ -9,11 +9,13 @@ public class GraphNode {
     
     private String tag;
     private int id;
+    private int depth;
     
-    public GraphNode(String tag, int id) 
+    public GraphNode(String tag, int id, int depth) 
     {
         this.tag = tag;
         this.id = id;
+        this.depth = depth;
     }
     
     public void setTag(String tag) 
@@ -30,5 +32,11 @@ public class GraphNode {
     public int getId()
     {
         return this.id;
+    }
+    
+    //Returns the depth of the node.
+    public int getDepth()
+    {
+        return this.depth;
     }
 }

@@ -45,10 +45,10 @@ public class Graph {
         }
     }
     
-    public int addNode(String tag)
+    public int addNode(String tag, int depth)
     {
         maxId += 1;
-        GraphNode node = new GraphNode(tag, maxId);
+        GraphNode node = new GraphNode(tag, maxId, depth);
         
         return maxId;
     }

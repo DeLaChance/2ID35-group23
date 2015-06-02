@@ -138,7 +138,7 @@ public class XMLParser {
                             //Get tag from child
                             String tag = child.getTagName();
                             //Create new node
-                            int childId = g.addNode(tag);
+                            int childId = g.addNode(tag, 0);
 
                             //create Edge from parent to child
                             g.addEdge(parentNodeId, childId);
