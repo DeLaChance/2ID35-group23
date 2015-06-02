@@ -6,6 +6,7 @@
 package xml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 import org.xml.sax.Attributes;
@@ -17,76 +18,123 @@ import labeler.*;
  * The Handler for SAX Events.
  */
 class SAXHandler extends DefaultHandler {
-    Graph g = new Graph();
-
-    GraphNode emp = null;
-    int depth = -1;
-    int prevChildId = 0;
-    //The real stack of nodes, used to build a graph.
-    Stack st = new Stack();
-    //Used to move nodes.
-    Stack intermediate = new Stack();
+    
+    public static String EDGE_IDENTIFIERS[] = { "incategory" };
+    
+    private Graph g = new Graph();
+    private Stack st = new Stack();
+    
+    private int state = 0;
+    private int counter = 0;
+            
+    public SAXHandler()
+    {
+    
+    }
+    
+    public void nextPhase()
+    {
+        counter = -1;
+        state += 1;
+    }
+    
+    private boolean isEdgeIdentifier(String qName)
+    {
+        for(int i = 0; i < EDGE_IDENTIFIERS.length; i++)
+        {
+            if( qName.equals(EDGE_IDENTIFIERS[i]) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+            
 
     @Override
     //Triggered when the start of tag is found.
     public void startElement(String uri, String localName, 
                              String qName, Attributes attributes) 
-                             throws SAXException {
-      if(!qName.equals("incategory")) {
-          depth++;
-          System.out.println("Depth is one higher to: " + depth);
-          System.out.println(qName);
-          int childId = g.addNode(qName, depth);
+                             throws SAXException 
+    {
+      if( state == 0 )
+      {
+        if(!this.isEdgeIdentifier(qName)) {
+
+          int childId = g.addNode(qName);
+          int length = attributes.getLength();
           
-          GraphNode parent = (GraphNode) st.pop();
-          g.addEdge(parent.getId(), childId);
-          st.push(parent);
-          st.push(g.getNode(childId));
-          
-          /*boolean isParent = false;
-          Looking for the parent of childId
-          while(!isParent && !st.empty()) {
-              GraphNode parent = (GraphNode) st.pop();
-              intermediate.push(parent);
-              if(depth == parent.getDepth()+1) {
-                  g.addEdge(parent.getId(), childId);
-                  isParent = true;
-              }
+          for (int i=0; i<length; i++) 
+          {
+              String name = attributes.getQName(i);
+              String value = attributes.getValue(i);
+
+              g.getNode(childId).addAttribute(name, value);
+              
+          }
+                    
+          if( !st.empty() )
+          {
+            Integer parentId = (Integer) st.lastElement();
+            GraphNode parent = g.getNode( parentId );
+            g.addEdge(parent.getId(), childId);
           }
           
-          //Put everything back on the stack and add the new node to the stack.
-          while(!intermediate.empty()) {
-              GraphNode lastNode = (GraphNode) intermediate.pop();
-              st.push(lastNode);
-          }*/
-          
-      } else {
-          //If it is an incategory tag, which should be a custom edge.
-          depth++;
-          System.out.println("Incategory tag, not handled in SAXHandler");
+          st.push(childId);
+        }
       }
-
-      /*switch(qName){
-        //Create a new Employee object when the start tag is found
-        case "employee":
-          emp = new GraphNode();
-          emp.id = attributes.getValue("id");
-          break;
-      }*/
+      if( state == 1 )
+      {
+          if( this.isEdgeIdentifier(qName) )
+          {
+            int length = attributes.getLength();   
+            for (int i=0; i<length; i++) 
+            {
+              String name = attributes.getQName(i);
+              String value = attributes.getValue(i);
+              
+              // Name indicates the name of the tag that belongs to a node X
+              // with which we want to connect
+              // Value indicates the value of the id-attribute of X
+              Integer k = g.findNode(name, value);
+              
+              if( k != -1 ) // found
+              {
+                  GraphEdge edge = new GraphEdge(new Pair(counter, k));
+                  g.addEdge(edge);
+              }
+            }
+          }
+          else
+          {
+              counter++;
+          }
+      }
     }
 
     @Override
     public void endElement(String uri, String localName, 
-                           String qName) throws SAXException {
-        depth--;
-        System.out.println("Depth is one lower to: " + depth);
-        System.out.println("End of element " + qName + " \n");
-        st.pop();
+                           String qName) throws SAXException 
+    {
+        if( state == 0 )
+        {
+            if(!this.isEdgeIdentifier(qName))
+            {
+                st.pop();
+            }
+        }
+
     }
 
     @Override
     public void characters(char[] ch, int start, int length) 
             throws SAXException {
 
+    }
+    
+    public Graph getGraph()
+    {
+        return this.g;
     }
 }

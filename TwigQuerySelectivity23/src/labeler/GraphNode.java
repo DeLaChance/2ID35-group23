@@ -5,17 +5,25 @@ import java.util.HashMap;
 /**
 * TODO: Description
 */
-public class GraphNode {
+public class GraphNode 
+{
     
     private String tag;
+    private HashMap<String, String> attributes;
     private int id;
-    private int depth;
     
-    public GraphNode(String tag, int id, int depth) 
+    public GraphNode(String tag, int id, HashMap<String, String> attributes)
     {
         this.tag = tag;
         this.id = id;
-        this.depth = depth;
+        this.attributes = attributes;
+    }    
+    
+    public GraphNode(String tag, int id)
+    {
+        this.tag = tag;
+        this.id = id;
+        this.attributes = new HashMap<String, String>();
     }
     
     public void setTag(String tag) 
@@ -27,16 +35,29 @@ public class GraphNode {
     {
         return this.tag;
     }
+
+    public String getAttributeByName(String name)
+    {
+        if( this.attributes.containsKey(name) )
+        {
+            return this.attributes.get(name);
+        }
+        
+        return null;
+    }
     
-    //Returns the Id of the node.
+    public void addAttribute(String name, String value)
+    {
+        if( this.attributes.containsKey(name) )
+        {
+            this.attributes.remove(name);
+        }
+
+        this.attributes.put(name, value);
+    }
+    
     public int getId()
     {
         return this.id;
-    }
-    
-    //Returns the depth of the node.
-    public int getDepth()
-    {
-        return this.depth;
     }
 }

@@ -1,16 +1,16 @@
-<x>
-<x1 x="1">
-<x10>
-<incategory x="4">
-</x10>
-</x1>
-<x2>
-</x2>
-<x3>
-<x4 id="4">
-<x40>
-<incategory x="1">
-</x40>
-</x4>
-</x3>
+<x id="0">
+<y id="1">
+<z id="2">
+<incategory z="5" />
+</z>
+</y>
+<y id="3">
+</y>
+<y id = "4">
+<z id="5">
+<a id="6">
+<incategory x="0" />
+</a>
+</z>
+</y>
 </x>

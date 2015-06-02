@@ -13,14 +13,14 @@ public class Graph {
     private HashMap<Integer, GraphNode> nodes = new HashMap<>();
     private HashMap<Integer, ArrayList<GraphEdge>> inEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
     private HashMap<Integer, ArrayList<GraphEdge>> outEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
-    private int maxId = -1;
+    private int maxId = 0;
     
     public Graph()
     {
         this.nodes = new HashMap<Integer, GraphNode>();
         this.inEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
         this.outEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
-        this.maxId = -1;
+        this.maxId = 0;
     }
     
     //Constructor which sets the initial values of the Graph like the nodes and the edges.
@@ -44,13 +44,21 @@ public class Graph {
             outEdges.put(node.getId(), new ArrayList<>());
         }
     }
-    
-    public int addNode(String tag, int depth)
+
+    public int addNode(String tag)
     {
-        maxId += 1;
-        GraphNode node = new GraphNode(tag, maxId, depth);
+        GraphNode node = new GraphNode(tag, maxId, new HashMap<String, String>());
+        addNode(node);
         
-        return maxId;
+        return maxId-1;   
+    }
+    
+    public int addNode(String tag, HashMap<String, String> attributes)
+    {
+        GraphNode node = new GraphNode(tag, maxId, attributes);
+        addNode(node);
+        
+        return maxId-1;
     }
     
     //Add @edge to the graph.
@@ -112,5 +120,20 @@ public class Graph {
             return this.nodes.get(vkey);
         else
             return null;
+    }
+    
+    public Integer findNode(String tag, String tagid)
+    {
+        for(Integer key : this.nodes.keySet())
+        {
+            GraphNode node = this.nodes.get(key);
+            if( node.getTag().equals(tag) && node.getAttributeByName("id").
+                equals(tagid))
+            {
+                return node.getId();
+            }
+        }
+        
+        return -1;
     }
 }

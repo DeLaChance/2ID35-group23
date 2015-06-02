@@ -32,7 +32,7 @@ public class Tarjan {
         
         for(HashSet<Integer> SCC : SCCs )
         {
-            GraphNode n = new GraphNode(null,j,0);
+            GraphNode n = new GraphNode(null,j);
             nodes.add(n);
             edges.put(j, new ArrayList<Integer>());
             j++;
