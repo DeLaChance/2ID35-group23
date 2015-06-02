@@ -12,7 +12,7 @@ public class XMLReader {
         SAXParser parser = parserFactor.newSAXParser();
         SAXHandler handler = new SAXHandler();
 
-        parser.parse(new FileInputStream("../datasets/xmark-sf0.4.xml"), 
+        parser.parse(new FileInputStream("../datasets/saxreadertest.xml"), 
                      handler);
     }
 
