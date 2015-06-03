@@ -15,12 +15,20 @@ import twigqueryselectivity23.TwigQuerySelectivity23;
  */
 public class Histogram extends TriangleGrid<Cell>
 {
+    public PositionList<? extends Position> data;
+    
     public Histogram(PositionList<? extends Position> datapoints)
     {
         super(TwigQuerySelectivity23.HIST_GRID_WIDTH, datapoints.getMaxY());
+        data = datapoints;
         
         this.populate(new ConcreteCellFactory(TwigQuerySelectivity23.HIST_CELL_BARS));
         this.populateCells(datapoints);
+    }
+    
+    public PositionList<? extends Position> getDatapoints()
+    {
+        return this.data;
     }
     
     public int estimateCount(PositionList<QueryPoint> qps)

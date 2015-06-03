@@ -17,11 +17,14 @@ public class Equidepth
     private int barCount;
     private int cellCount = 0;
     private int left=Integer.MAX_VALUE, upp=Integer.MIN_VALUE;
-    private Bar[] bars = new Bar[barCount]; // ordered width ascending minX
+    private Bar[] bars; // ordered width ascending minX
     
     public Equidepth(int barCount)
     {
         this.barCount = barCount;
+        this.bars =  new Bar[barCount];
+        for(int i=0; i<barCount; i++)
+            this.bars[i] = new Bar();
     }
     
     public double getBarCount()

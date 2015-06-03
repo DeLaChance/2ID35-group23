@@ -70,6 +70,11 @@ public class TriangleGrid<T> implements Iterable<T>
                 grid[h][v] = new Ref(factory.create(isOnDiagonal(h, v)));
     }
     
+    public int getMaxY()
+    {
+        return this.maxY;
+    }
+    
     public T getCell(int x, int y)
     {
         checkInGrid(x,y);
@@ -113,7 +118,7 @@ public class TriangleGrid<T> implements Iterable<T>
     }
     private boolean isInGrid(int x, int y)
     {
-        return x<y && y < maxY;
+        return x<y && y <= maxY;
     }
 
     /**
