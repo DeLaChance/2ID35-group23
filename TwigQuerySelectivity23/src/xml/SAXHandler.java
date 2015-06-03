@@ -19,7 +19,7 @@ import labeler.*;
  */
 class SAXHandler extends DefaultHandler {
     
-    public static String EDGE_IDENTIFIERS[] = { "incategory" };
+    public static String EDGE_IDENTIFIERS[] = { "incategory", "interest", "itemref", "personref" };
     
     private Graph g = new Graph();
     private Stack st = new Stack();

@@ -136,4 +136,30 @@ public class Graph {
         
         return -1;
     }
+    
+    public String toString()
+    {
+        String a = "[";
+        for(Integer key : this.nodes.keySet())
+        {
+            a += key + ": [";
+            
+            if( this.outEdges.get(key).size() > 0 )
+            {
+                for(GraphEdge e : this.outEdges.get(key) )
+                {
+                    a += "(" + e.getLeft() + "," + e.getRight() + "), ";
+                }
+            }
+            
+            a += "], ";
+        }
+        
+        if( this.nodes.keySet().size() > 0)
+            a = a.substring(0, a.length()-2);
+        
+        a += "]";
+        
+        return a;
+    }
 }
