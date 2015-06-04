@@ -26,11 +26,14 @@ public class C1PMatrixGenerator
             do
             {
                 x = randInt(0,max);
-                y = randInt(0,max);
+                int d = randInt2(0,(max+1)/2);
+                y = x+d;
+                x = x-d;
             }
-            while(!(x<y));
+            while(!(x<y && x>=0 && y>=0 && y<max));
             
             m.add(new C1PRow(null, x, y));
+            System.out.println(m.size());
         }
         
         return m;
@@ -43,5 +46,13 @@ public class C1PMatrixGenerator
         assert min < max;
         
         return min+(int)((max-min)*Math.random());
+    }
+    
+    private static int randInt2(int min, int max)
+    {
+        assert min < max;
+        
+        double r = Math.random();
+        return min+(int)((max-min)*r*r);
     }
 }

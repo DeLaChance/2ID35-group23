@@ -26,7 +26,18 @@ public class PositionList<P extends Position> extends TreeSet<P>
                 @Override
                 public int compare(P o1, P o2)
                 {
-                    return o1.getX() - o2.getX();
+                    int c;
+                    
+                    if(o1.getX() != o2.getX())
+                        c = o1.getX() - o2.getX();
+                    else if(o1.getY() != o2.getY())
+                        c = o1.getY() - o2.getY();
+                    else
+                        c = o1.getID() - o2.getID();
+                    
+                    if(c==0)
+                        System.out.println("Compare: "+c+" | "+o1.getX()+"/"+o2.getX()+" "+o1.getY()+"/"+o2.getY()+" "+o1.getID()+"/"+o2.getID());
+                    return c;
                 }
             });
     }
