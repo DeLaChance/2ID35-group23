@@ -32,7 +32,7 @@ public class Equidepth
         return this.barCount;
     }
     
-    protected Bar[] getBars()
+    public Bar[] getBars()
     {
         return this.bars;
     }
@@ -168,7 +168,7 @@ public class Equidepth
         return count;
     }
     
-    private class Bar extends PositionList<Position>
+    public class Bar extends PositionList<Position>
     {
         public int minX,maxX, minY,maxY;
         

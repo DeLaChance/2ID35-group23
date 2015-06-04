@@ -64,4 +64,9 @@ public class Cell extends Equidepth
         
         return super.getCount(qps, 2);
     }
+    
+    public PositionList<Position> getDatapoints()
+    {
+        return this.datapoints;
+    }
 }
