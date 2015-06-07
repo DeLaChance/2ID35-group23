@@ -7,18 +7,18 @@ package c1p;
 
 import java.util.ArrayList;
 import java.util.List;
-import labeler.Node;
+import labeler.GraphNode;
 
 /**
  *
  * @author francois
  */
 public class Row extends ArrayList<Integer> {
-	private Node node;
+	private GraphNode node;
 	private int overlap = 0;
 		
-	public Node getNode() { return node; }
-	public void setNode(Node n) { this.node = node; }
+	public GraphNode getNode() { return node; }
+	public void setNode(GraphNode n) { this.node = node; }
 	
 	public int getOverlap() { return overlap; }
 	public void setOverlap(int overlap) { this.overlap = overlap; }
