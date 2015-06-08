@@ -13,6 +13,8 @@ package hist;
 public class Position
 {
     private int x,y;
+    private int id = Position.count++;
+    private static int count=0;
     
     public Position(int x, int y)
     {
@@ -28,5 +30,10 @@ public class Position
     public int getY()
     {
         return y;
+    }
+    
+    public int getID()
+    {
+        return this.id;
     }
 }

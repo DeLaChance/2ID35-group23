@@ -75,6 +75,16 @@ public class TriangleGrid<T> implements Iterable<T>
         return this.maxY;
     }
     
+    public int getWidth()
+    {
+        return this.width;
+    }
+    
+    public int getCellSize()
+    {
+        return this.cellSize;
+    }
+    
     public T getCell(int x, int y)
     {
         checkInGrid(x,y);
@@ -116,7 +126,7 @@ public class TriangleGrid<T> implements Iterable<T>
             throw new IllegalArgumentException("position ("+x+","+y+")->("+p[0]+","+p[1]+") not in grid");
         }
     }
-    private boolean isInGrid(int x, int y)
+    public boolean isInGrid(int x, int y)
     {
         return x<y && y <= maxY;
     }

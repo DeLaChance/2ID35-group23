@@ -18,17 +18,19 @@ public class C1PMatrixGenerator
     public static C1PMatrix createMatrix()
     {
         C1PMatrix m = new C1PMatrix();
-        int max = 512;
+        int max = twigqueryselectivity23.TwigQuerySelectivity23.GEN_COLUMN_COUNT;
         
-        for(int i=0; i<1024; i++)
+        for(int i=0; i<100000; i++)
         {
             int x,y;
             do
             {
-                x = randInt(0,max);
-                y = randInt(0,max);
+                x = randInt(0,2*max);
+                int d = randInt2(0,(max+1));
+                y = (x+d)/2;
+                x = (x-d)/2;
             }
-            while(!(x<y));
+            while(!(x<y && x>=0 && y>=0 && y<max));
             
             m.add(new C1PRow(null, x, y));
         }
@@ -43,5 +45,13 @@ public class C1PMatrixGenerator
         assert min < max;
         
         return min+(int)((max-min)*Math.random());
+    }
+    
+    private static int randInt2(int min, int max)
+    {
+        assert min < max;
+        
+        double r = Math.random();
+        return min+(int)((max-min)*r*r*r);
     }
 }

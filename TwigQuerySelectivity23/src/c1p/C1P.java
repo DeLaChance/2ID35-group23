@@ -61,7 +61,7 @@ public class C1P {
 				joined.add(currentRow);
 
 				if(isC1P(joined) ||
-						hasOverlap(currentRow, subMatrix) ||
+						!hasOverlap(currentRow, subMatrix) ||
 						containsRow(subMatrix, currentRow))
 				{
 					subMatrix = columnPartition(subMatrix, currentRow);

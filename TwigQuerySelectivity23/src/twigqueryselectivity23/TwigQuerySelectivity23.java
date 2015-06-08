@@ -22,6 +22,8 @@ public class TwigQuerySelectivity23 {
     public static final int HIST_GRID_WIDTH = 100;
     // number of bars in the equidepth histogram (rho = 1/HIST_CELL_BARS)
     public static final int HIST_CELL_BARS  =  10;
+    // number of columns in randomly generated C1P matrix
+    public static final int GEN_COLUMN_COUNT = 100000000;
     
     /**
      * @param args the command line arguments
