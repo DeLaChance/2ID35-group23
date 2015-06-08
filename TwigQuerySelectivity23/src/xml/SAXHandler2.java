@@ -98,7 +98,7 @@ public class SAXHandler2 extends DefaultHandler {
           {
             int childId = g.addNode(qName);
             int length = attributes.getLength();
-
+            
             for (int i=0; i<length; i++) 
             {
                 String name = attributes.getQName(i);
@@ -170,5 +170,10 @@ public class SAXHandler2 extends DefaultHandler {
     {
         return this.g;
     }    
+    
+    public HashMap<String, Boolean> getEdgeMap()
+    {
+        return this.isEdge;
+    }
     
 }

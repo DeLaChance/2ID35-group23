@@ -1,27 +1,51 @@
 package xml;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import labeler.Graph;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
-public class XMLReader {
-    public XMLReader(double scalingfactor) throws Exception {
-        SAXParserFactory parserFactor = SAXParserFactory.newInstance();
-        SAXParser parser = parserFactor.newSAXParser();
-        SAXHandler handler = new SAXHandler();
-
-        parser.parse(new FileInputStream("../datasets/saxreadertest.xml"), 
-                     handler);
+public class XMLReader 
+{
+    private Graph g;
+    private String url;
+    
+    
+    public XMLReader(String url) 
+    {
+        this.url = url;
+    }
+    
+    public void createGraph()
+    {
+        try 
+        {
+            SAXParserFactory parserFactor = SAXParserFactory.newInstance();
+            SAXParser parser = parserFactor.newSAXParser();
+            SAXHandler2 handler = new SAXHandler2();
+            
+            parser.parse(new FileInputStream(url), handler);
+            handler.nextPhase();
+            parser.parse(new FileInputStream(url), handler);
+            handler.nextPhase();
+            parser.parse(new FileInputStream(url), handler);        
+            this.g = handler.getGraph();
+        } 
+        catch (Exception ex) 
+        {
+            Logger.getLogger(XMLReader.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    public Graph getGraph()
+    {
+        return this.g;
     }
 
-  public static void main(String[] args) throws Exception {
-    
-    
-    //Printing the list of employees obtained from XML
-    /*for ( Employee emp : handler.empList){
-      System.out.println(emp);
-    }*/
-  }
 }

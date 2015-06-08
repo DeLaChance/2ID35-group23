@@ -42,6 +42,8 @@ public class Graph {
             
             inEdges.put(node.getId(), new ArrayList<>());
             outEdges.put(node.getId(), new ArrayList<>());
+            
+            System.out.println("Added node: " + node.getId() + " with tag " + node.getTag());
         }
     }
 
@@ -78,6 +80,9 @@ public class Graph {
             
             inE.add(edge.reverse());
             outE.add(edge);
+            
+            System.out.println("Added edge: ( " + edge.getLeft() + ", " 
+                + edge.getRight() + " )");            
         }
     }
     
@@ -127,10 +132,13 @@ public class Graph {
         for(Integer key : this.nodes.keySet())
         {
             GraphNode node = this.nodes.get(key);
-            if( node.getTag().equals(tag) && node.getAttributeByName("id").
-                equals(tagid))
+            if( node.getAttributeByName("id") != null )
             {
-                return node.getId();
+                if( node.getTag().equals(tag) && node.getAttributeByName("id").
+                    equals(tagid))
+                {
+                    return node.getId();
+                }
             }
         }
         
@@ -161,5 +169,13 @@ public class Graph {
         a += "]";
         
         return a;
+    }
+    
+    public void print()
+    {
+        for(Integer key : this.nodes.keySet())
+        {
+            System.out.println(key + ": " + this.outEdges.get(key).toString());
+        }
     }
 }

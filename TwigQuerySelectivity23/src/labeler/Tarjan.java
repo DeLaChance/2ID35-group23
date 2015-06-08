@@ -34,6 +34,7 @@ public class Tarjan {
         {
             GraphNode n = new GraphNode(null,j);
             nodes.add(n);
+            System.out.println("SCC-" + j + " contains " + SCC.toString());
             edges.put(j, new ArrayList<Integer>());
             j++;
         }
