@@ -75,6 +75,7 @@ public class SAXHandler2 extends DefaultHandler {
                              String qName, Attributes attributes) 
                              throws SAXException 
     {
+      //In the first round we collect all possible tags and their properties.
       if( state == 0 ) 
       {
         int length = attributes.getLength();
@@ -91,7 +92,8 @@ public class SAXHandler2 extends DefaultHandler {
             tagTypes.get(qName).add(name);
         }           
       } 
-        
+      
+      //In the second round we create a node for each tag founded.
       if( state == 1 )
       {
           if( !isEdge(qName) )
