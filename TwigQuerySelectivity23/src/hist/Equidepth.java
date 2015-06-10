@@ -27,7 +27,7 @@ public class Equidepth
             this.bars[i] = new Bar();
     }
     
-    public double getBarCount()
+    public int getBarCount()
     {
         return this.barCount;
     }

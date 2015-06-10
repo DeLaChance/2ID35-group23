@@ -69,4 +69,17 @@ public class Cell extends Equidepth
     {
         return this.datapoints;
     }
+    
+    @Override
+    public String toString()
+    {
+        String s = this.getCellCount() + " datapoints\n";
+        
+        for(Bar b : this.getBars())
+        {
+            s += "bar: x=["+b.minX+","+b.maxX+"], y=["+b.minY+","+b.maxY+"]\n";
+        }
+        
+        return s;
+    }
 }

@@ -22,20 +22,27 @@ public class C1PMatrixGenerator
         
         for(int i=0; i<100000; i++)
         {
-            int x,y;
-            do
-            {
-                x = randInt(0,2*max);
-                int d = randInt2(0,(max+1));
-                y = (x+d)/2;
-                x = (x-d)/2;
-            }
-            while(!(x<y && x>=0 && y>=0 && y<max));
+            int[] p = randPosition(max);
             
-            m.add(new C1PRow(null, x, y));
+            m.add(new C1PRow(null, p[0], p[1]));
         }
         
         return m;
+    }
+    
+    public static int[] randPosition(int max)
+    {
+        int x,y;
+        do
+        {
+            x = randInt(0,2*max);
+            int d = randInt2(0,(max+1));
+            y = (x+d)/2;
+            x = (x-d)/2;
+        }
+        while(!(x<y && x>=0 && y>=0 && y<max));
+        
+        return new int[] {x, y};
     }
     
     // random int in range [min, max) 
