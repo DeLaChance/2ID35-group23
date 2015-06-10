@@ -27,8 +27,8 @@ public class Test
     
 	public static void testMatrixGenerator()
 	{
-		List<C1PRow> m = C1PMatrixGenerator.createTree(10, 3, 4);
-		System.out.println("Done");
+		C1PMatrix m = C1PMatrixGenerator.createMatrix();
+		System.out.println(m.toString());
 	}
 	
     public static void testHistogram()

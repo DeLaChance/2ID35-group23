@@ -41,7 +41,8 @@ public class C1PMatrixGenerator
         return m;
     }
     
-	public static C1PMatrix createMatrix2()
+	/*
+	public static C1PMatrix createMatrix3()
 	{
 		//Create a random number of trees
 		C1PMatrix m = new C1PMatrix();
@@ -49,11 +50,11 @@ public class C1PMatrixGenerator
 		int offset = 0;
 		for(int i = 0; i < 100; i++)
 		{
-			List<C1PRow> rows = createTree(200, randInt(0, 100), randInt(0, 10));
+			List<C1PRow> rows = createTree(5000, randInt(0, 5000), randInt(0, 5000));
 			
 			int maxX = offset;
 			for(C1PRow row : rows)
-			{		
+			{
 				C1PRow newRow = new C1PRow(null, row.getX() + offset, row.getY() + offset);
 				m.add(newRow);
 				
@@ -134,6 +135,87 @@ public class C1PMatrixGenerator
 		while(!newRows.isEmpty())
 		{
 			r.add(newRows.remove(newRows.size() - 1));
+		}
+		
+		return r;
+	}
+	*/
+	
+	public static C1PMatrix createMatrix2()
+	{
+		return createTree(100, 10, 2);
+	}
+	
+	private static C1PMatrix createTree(int maxColumns, int leafs, int branchingFactor)
+	{
+		C1PMatrix r = new C1PMatrix();
+		
+		C1PMatrix l = createLeafs(leafs);
+		r.addAll(l);
+		
+//		//Create parents for the leafs
+//		{
+//			int parentX = Integer.MAX_VALUE;
+//			int parentY = Integer.MIN_VALUE;
+//			for(C1PRow leafRow : l)
+//			{
+//				if(leafRow.getX() <= parentX)
+//					parentX = leafRow.getX();
+//				if(leafRow.getY() >= parentY)
+//					parentY = leafRow.getY();
+//
+//				if(parentY - parentX == branchingFactor)
+//				{
+//					r.add(new C1PRow(null, parentX, parentY));
+//					parentX = Integer.MAX_VALUE;
+//					parentY = Integer.MIN_VALUE;
+//				}
+//			}
+//			if(parentX != Integer.MAX_VALUE && parentY != Integer.MIN_VALUE) //parent with less children than branching factor
+//				r.add(new C1PRow(null, parentX, parentY));
+//		}
+		
+		//Keep creating parents until we have a large tree
+		int nextX = 0;
+		while(r.getMaxY() < maxColumns && r.getMaxY() > nextX)
+		{
+			int parentX = Integer.MAX_VALUE;
+			int parentY = Integer.MIN_VALUE;
+			
+			for(C1PRow row : r)
+			{
+				if(row.getX() < nextX) //fast forward to the next leaf
+					continue;
+				
+				//Should we take the current row for the parent?
+				boolean take = randBool();
+				if(!take)
+					break;
+
+				//Make the row a child of the parent
+				if(row.getX() < parentX)
+					parentX = row.getX();
+				if(row.getY() > parentY)
+					parentY = row.getY() + 1;
+				
+				nextX = row.getY() + 1;
+			}
+			
+			if(parentX == Integer.MAX_VALUE || parentY == Integer.MIN_VALUE)
+				continue;
+			
+			r.add(new C1PRow(null, parentX, parentY));
+		}
+				
+		return r;
+	}
+	private static C1PMatrix createLeafs(int count)
+	{
+		C1PMatrix r = new C1PMatrix();
+		
+		for(int i = 0; i < count; i++)
+		{
+			r.add(new C1PRow(null, i, i+1));
 		}
 		
 		return r;

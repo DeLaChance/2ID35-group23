@@ -44,4 +44,9 @@ public class C1PRow extends Position
 	{
 		return new C1PRow(null, this.getX(), this.getY() + 1);
 	}
+	
+	public boolean isLeaf()
+	{
+		return Math.abs(this.getY() - this.getX()) == 1;
+	}
 }
