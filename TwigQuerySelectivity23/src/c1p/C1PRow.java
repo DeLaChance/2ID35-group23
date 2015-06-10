@@ -11,6 +11,10 @@ public class C1PRow extends Position
 {
 	private GraphNode node;
     
+	public C1PRow(C1PRow other) {
+		super(other.getX(), other.getY());
+	}
+	
     public C1PRow(GraphNode node, int fromColumnIndex, int toColumnIndex)
     {
         super(fromColumnIndex, toColumnIndex);
@@ -31,4 +35,18 @@ public class C1PRow extends Position
     {
         return this.getY();
     }
+	
+	public C1PRow prependOne()
+	{
+		return new C1PRow(null, this.getX() - 1, this.getY());
+	}
+	public C1PRow appendOne()
+	{
+		return new C1PRow(null, this.getX(), this.getY() + 1);
+	}
+	
+	public boolean isLeaf()
+	{
+		return Math.abs(this.getY() - this.getX()) == 1;
+	}
 }

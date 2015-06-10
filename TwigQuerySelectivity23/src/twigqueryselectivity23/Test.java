@@ -6,9 +6,12 @@
 
 package twigqueryselectivity23;
 
+import c1p.C1PMatrix;
+import c1p.C1PRow;
 import c1pGenerator.C1PMatrixGenerator;
 import hist.Histogram;
 import hist.debugView.MainView;
+import java.util.List;
 
 /**
  *
@@ -18,9 +21,16 @@ public class Test
 {
     public static final void main(String[] args) throws Throwable
     {
+		testMatrixGenerator();
         testHistogram();
     }
     
+	public static void testMatrixGenerator()
+	{
+		C1PMatrix m = C1PMatrixGenerator.createMatrix();
+		System.out.println(m.toString());
+	}
+	
     public static void testHistogram()
     {
         Histogram hist = new Histogram(C1PMatrixGenerator.createMatrix());

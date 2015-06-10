@@ -31,7 +31,7 @@ public class PositionList<P extends Position> extends TreeSet<P>
                     if(o1.getX() != o2.getX())
                         c = o1.getX() - o2.getX();
                     else if(o1.getY() != o2.getY())
-                        c = o1.getY() - o2.getY();
+                        c = o2.getY() - o1.getY();
                     else
                         c = o1.getID() - o2.getID();
                     
