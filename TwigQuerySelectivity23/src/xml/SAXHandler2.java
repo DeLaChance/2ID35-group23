@@ -28,6 +28,7 @@ public class SAXHandler2 extends DefaultHandler {
     
     private int state = 0;
     private int counter = 0;
+    private int size = 0;
     private HashMap<String, HashSet<String>> tagTypes;
     private HashMap<String, Boolean> isEdge;
     
@@ -44,7 +45,14 @@ public class SAXHandler2 extends DefaultHandler {
         
         if( state == 1 )
         {
+            System.out.println("First round complete");
+            System.out.println("Total number of tags: " + this.size);
+            System.out.println("Number of distinct tags: " + tagTypes.keySet().size());
             buildIsEdgeMap();
+        }
+        if( state == 2 )
+        {
+            System.out.println("Second round complete");
         }
     }
     
@@ -89,7 +97,9 @@ public class SAXHandler2 extends DefaultHandler {
             String value = attributes.getValue(i);
 
             tagTypes.get(qName).add(name);
-        }           
+        }   
+        
+        size++;
       } 
         
       if( state == 1 )
@@ -104,7 +114,7 @@ public class SAXHandler2 extends DefaultHandler {
                 String name = attributes.getQName(i);
                 String value = attributes.getValue(i);
 
-                g.getNode(childId).addAttribute(name, value);
+                g.editNodeAttribute(childId, name, value);
 
             }
 
@@ -132,7 +142,7 @@ public class SAXHandler2 extends DefaultHandler {
               // Name indicates the name of the tag that belongs to a node X
               // with which we want to connect
               // Value indicates the value of the id-attribute of X
-              Integer k = g.findNode(name, value);
+              Integer k = g.findNodeFast(name, value);
 
               if( k != -1 ) // found
               {

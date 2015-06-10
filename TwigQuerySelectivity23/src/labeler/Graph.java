@@ -11,16 +11,20 @@ import java.util.Set;
 public class Graph {
     
     private HashMap<Integer, GraphNode> nodes = new HashMap<>();
+    private HashMap<String, ArrayList<Integer>> customIds = new HashMap<>();
     private HashMap<Integer, ArrayList<GraphEdge>> inEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
     private HashMap<Integer, ArrayList<GraphEdge>> outEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
     private int maxId = 0;
+    private int noOfEdges = 0;
     
     public Graph()
     {
         this.nodes = new HashMap<Integer, GraphNode>();
         this.inEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
         this.outEdges = new HashMap<Integer, ArrayList<GraphEdge>>();
+        this.customIds = new HashMap<String, ArrayList<Integer>>();
         this.maxId = 0;
+        this.noOfEdges = 0;
     }
     
     //Constructor which sets the initial values of the Graph like the nodes and the edges.
@@ -30,6 +34,7 @@ public class Graph {
         this.nodes = nodes;
         this.inEdges = inEdges;
         this.outEdges = outEdges;
+        this.noOfEdges = (inEdges.size() + outEdges.size()) / 2;
     }
     
     //Add a node to the graph. Also the edges are added to this specific new node.
@@ -43,7 +48,20 @@ public class Graph {
             inEdges.put(node.getId(), new ArrayList<>());
             outEdges.put(node.getId(), new ArrayList<>());
             
-            System.out.println("Added node: " + node.getId() + " with tag " + node.getTag());
+            if( node.getCustomId() != null )
+            {
+                String s = node.getCustomId();
+                ArrayList<Integer> L = this.customIds.get(s);
+                if( L == null )
+                {
+                    this.customIds.put(s, new ArrayList<Integer>());
+                }
+                
+                L.add(node.getId());
+                
+            }
+            
+            //System.out.println("Added node: " + node.getId() + " with tag " + node.getTag());
         }
     }
 
@@ -61,6 +79,28 @@ public class Graph {
         addNode(node);
         
         return maxId-1;
+    }
+    
+    public void editNodeAttribute(Integer key, String attribute, String value)
+    {
+        if( this.nodes.containsKey(key) )
+        {
+            GraphNode node = this.nodes.get(key);
+            node.addAttribute(attribute, value);
+            if( node.getCustomId() != null )
+            {
+                String s = node.getCustomId();
+                ArrayList<Integer> L = this.customIds.get(s);
+                if( L == null )
+                {
+                    L = new ArrayList<Integer>();
+                    this.customIds.put(s, L);
+                }
+                
+                L.add(node.getId());
+                
+            }        
+        }
     }
     
     //Add @edge to the graph.
@@ -81,8 +121,10 @@ public class Graph {
             inE.add(edge.reverse());
             outE.add(edge);
             
-            System.out.println("Added edge: ( " + edge.getLeft() + ", " 
-                + edge.getRight() + " )");            
+            noOfEdges += 1;
+            
+            //System.out.println("Added edge: ( " + edge.getLeft() + ", " 
+            //    + edge.getRight() + " )");            
         }
     }
     
@@ -145,6 +187,24 @@ public class Graph {
         return -1;
     }
     
+    public Integer findNodeFast(String tag, String tagid)
+    {
+        if( this.customIds.containsKey(tagid))
+        {
+            for(Integer I : this.customIds.get(tagid))
+            {
+                GraphNode node = this.nodes.get(I);
+                if( node.getTag().equals(tag) && node.getAttributeByName("id").
+                    equals(tagid))
+                {
+                    return node.getId();
+                }
+            }
+        }
+        
+        return -1;
+    }
+    
     public String toString()
     {
         String a = "[";
@@ -160,7 +220,7 @@ public class Graph {
                 }
             }
             
-            a += "], ";
+            a += "] \n ";
         }
         
         if( this.nodes.keySet().size() > 0)
@@ -177,5 +237,11 @@ public class Graph {
         {
             System.out.println(key + ": " + this.outEdges.get(key).toString());
         }
+    }
+    
+
+    public int getNumberOfEdges()
+    {
+        return this.noOfEdges;
     }
 }

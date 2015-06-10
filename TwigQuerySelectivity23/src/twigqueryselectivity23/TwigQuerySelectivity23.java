@@ -32,7 +32,7 @@ public class TwigQuerySelectivity23 {
         // TODO code application logic here
         //String fileLoc = "/home/lucien/Downloads/standard.xml" ;//args[0];
         try {
-            XMLReader xmlparser = new XMLReader(0.4);
+            //XMLReader xmlparser = new XMLReader(0.4);
         } catch (Exception e) {
             e.printStackTrace();
         }

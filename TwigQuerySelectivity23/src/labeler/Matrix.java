@@ -179,6 +179,19 @@ public class Matrix {
         return s;
     }
     
+    public void print()
+    {
+        for(ArrayList<Integer> L : this.matrix)
+        {
+            String s = "";
+            for(Integer I : L)
+            {
+                s += I + ",";
+            }
+            System.out.println(s);
+        }        
+    }
+    
 	public ArrayList<Integer> getColumn(int n)
 	{
 		throw new NotImplementedException();

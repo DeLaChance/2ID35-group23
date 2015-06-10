@@ -71,7 +71,7 @@ public class SAXHandler2Test {
             ArrayList<GraphEdge> a = g.getOutNeighbours(0);
             ArrayList<GraphEdge> b = g.getInNeighbours(0);
             
-            assertTrue(a.size() == 3);
+            assertTrue(a.size() == 4);
             //assertTrue(a.get(0).getRight() == 1 && a.get(1).getRight() == 2 && a.get(2).getRight() == 3);
             assertTrue(b.size() == 1);
             //assertTrue(b.get(0).getRight() == )

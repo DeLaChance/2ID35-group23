@@ -34,4 +34,10 @@ public class GraphEdge {
         
         return edge;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "(" + this.edge.getFirst() + "," + this.edge.getSecond() + ")";
+    }
 }

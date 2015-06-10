@@ -60,4 +60,14 @@ public class GraphNode
     {
         return this.id;
     }
+    
+    public String getCustomId() 
+    {
+        if( this.attributes.containsKey("id") )
+        {
+            return this.attributes.get("id");
+        }
+        
+        return null;
+    }
 }
