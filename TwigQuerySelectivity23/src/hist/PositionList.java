@@ -16,6 +16,7 @@ import java.util.Comparator;
  */
 public class PositionList<P extends Position> extends TreeSet<P>
 {
+	private int maxX;
     private int maxY;
     
     public PositionList()
@@ -40,6 +41,11 @@ public class PositionList<P extends Position> extends TreeSet<P>
             });
     }
     
+	public int getMaxX()
+	{
+		return this.maxX;
+	}
+	
     public int getMaxY()
     {
         return this.maxY;
@@ -82,6 +88,8 @@ public class PositionList<P extends Position> extends TreeSet<P>
     @Override
     public boolean add(P o)
     {
+		if(o.getX() > this.maxX)
+			this.maxX = o.getX();
         if(o.getY() > this.maxY)
             this.maxY = o.getY();
         

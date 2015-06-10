@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class C1PMatrixGenerator
 {
-    public static C1PMatrix createMatrix()
+    public static C1PMatrix createMatrix2()
     {
         C1PMatrix m = new C1PMatrix();
         int max = twigqueryselectivity23.TwigQuerySelectivity23.GEN_COLUMN_COUNT;
@@ -148,43 +148,24 @@ public class C1PMatrixGenerator
 	}
 	*/
 	
-	public static C1PMatrix createMatrix2()
+	public static C1PMatrix createMatrix()
 	{
-		return createTree(100, 10, 2);
+		int leafs = 5000;
+		System.out.println("leafs: " + leafs);
+		return createTree(leafs, leafs, 0.2);
 	}
 	
-	private static C1PMatrix createTree(int maxColumns, int leafs, int branchingFactor)
+	private static C1PMatrix createTree(int treeHeight, int leafs, double branchingChance)
 	{
 		C1PMatrix r = new C1PMatrix();
 		
+		//First add a set of leafs
 		C1PMatrix l = createLeafs(leafs);
 		r.addAll(l);
 		
-//		//Create parents for the leafs
-//		{
-//			int parentX = Integer.MAX_VALUE;
-//			int parentY = Integer.MIN_VALUE;
-//			for(C1PRow leafRow : l)
-//			{
-//				if(leafRow.getX() <= parentX)
-//					parentX = leafRow.getX();
-//				if(leafRow.getY() >= parentY)
-//					parentY = leafRow.getY();
-//
-//				if(parentY - parentX == branchingFactor)
-//				{
-//					r.add(new C1PRow(null, parentX, parentY));
-//					parentX = Integer.MAX_VALUE;
-//					parentY = Integer.MIN_VALUE;
-//				}
-//			}
-//			if(parentX != Integer.MAX_VALUE && parentY != Integer.MIN_VALUE) //parent with less children than branching factor
-//				r.add(new C1PRow(null, parentX, parentY));
-//		}
-		
 		//Keep creating parents until we have a large tree
 		int nextX = 0;
-		while(r.getMaxY() < maxColumns && r.getMaxY() > nextX)
+		while(treeHeight >= 0)
 		{
 			int parentX = Integer.MAX_VALUE;
 			int parentY = Integer.MIN_VALUE;
@@ -194,9 +175,8 @@ public class C1PMatrixGenerator
 				if(row.getX() < nextX) //fast forward to the next leaf
 					continue;
 				
-				//Should we take the current row for the parent?
-				boolean take = randBool();
-				if(!take)
+				//Should we include the current row in the parent?
+				if(randDouble() <= branchingChance)
 					break;
 
 				//Make the row a child of the parent
@@ -208,10 +188,13 @@ public class C1PMatrixGenerator
 				nextX = row.getY() + 1;
 			}
 			
+			//If no parent was found, continue
 			if(parentX == Integer.MAX_VALUE || parentY == Integer.MIN_VALUE)
 				continue;
 			
 			r.add(new C1PRow(null, parentX, parentY));
+			nextX = randInt(0, r.getMaxX());
+			treeHeight--;
 		}
 				
 		return r;
@@ -252,8 +235,14 @@ public class C1PMatrixGenerator
         return min+(int)((max-min)*r*r*r);
     }
 	
+	private static Random random = new Random();
 	private static boolean randBool()
 	{
-		return new Random().nextBoolean();
+		return random.nextBoolean();
+	}
+	
+	private static double randDouble()
+	{
+		return random.nextDouble();
 	}
 }
