@@ -34,6 +34,7 @@ public class Tarjan {
         {
             GraphNode n = new GraphNode(null,j);
             nodes.add(n);
+            //System.out.println("SCC-" + j + " is of size; " + SCC.size());
             edges.put(j, new ArrayList<Integer>());
             j++;
         }

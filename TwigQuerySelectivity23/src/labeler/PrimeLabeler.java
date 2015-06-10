@@ -137,6 +137,7 @@ public class PrimeLabeler {
                     ArrayList<Integer> productPrimeVector = productPrimeVector(buildNewPrimeVector(), al1);
                     primeLabelperNode.put(vkey, productPrimeVector);
                 }
+
             }
         }
         
@@ -186,5 +187,13 @@ public class PrimeLabeler {
         }
         
         return al3;
+    }
+    
+    public static void print()
+    {
+        for(Integer vkey : primeLabelperNode.keySet())
+        {
+            System.out.println("SCC-node: " + vkey + ": " + primeLabelperNode.get(vkey));
+        }
     }
 }
