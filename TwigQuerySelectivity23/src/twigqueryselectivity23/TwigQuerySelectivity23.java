@@ -19,7 +19,7 @@ import xml.XMLReader;
 public class TwigQuerySelectivity23 {
 
     // number of cells in x and y direction (total # cells: (HIST_GRID_WIDTH+1)*HIST_GRID_WIDTH/2 )
-    public static final int HIST_GRID_WIDTH = 100;
+    public static final int HIST_GRID_WIDTH = 10;
     // number of bars in the equidepth histogram (rho = 1/HIST_CELL_BARS)
     public static final int HIST_CELL_BARS  =  10;
     // number of columns in randomly generated C1P matrix

@@ -7,11 +7,9 @@
 package twigqueryselectivity23;
 
 import c1p.C1PMatrix;
-import c1p.C1PRow;
 import c1pGenerator.C1PMatrixGenerator;
 import hist.Histogram;
 import hist.debugView.MainView;
-import java.util.List;
 
 /**
  *
@@ -21,7 +19,7 @@ public class Test
 {
     public static final void main(String[] args) throws Throwable
     {
-		testMatrixGenerator();
+		//testMatrixGenerator();
         testHistogram();
     }
     

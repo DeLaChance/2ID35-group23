@@ -40,12 +40,14 @@ public class Equidepth
     protected void rebuild(PositionList<? extends Position> datapoints)
     {
         cellCount = datapoints.size();
-        int barSize = (cellCount+barCount-1)/barCount;
+        int unAssignedPoints = cellCount;
         
         int i = 0;
         
         for(Position p : datapoints) // increasing p.getX()
         {
+            int barSize = (unAssignedPoints+barCount-i-1)/(barCount-i);
+            
             if(p.getX() < left)
                 left = p.getX();
             if(p.getY() > upp)
@@ -54,7 +56,10 @@ public class Equidepth
             bars[i].add(p);
             
             if(bars[i].size() == barSize)
+            {
                 i++;
+                unAssignedPoints -= barSize;
+            }
         }
     }
     
@@ -105,7 +110,7 @@ public class Equidepth
             }
             
             if(included)
-                count += barCount;
+                count += bars[i].getTotalCount();
         }
         
         return count;
@@ -127,7 +132,7 @@ public class Equidepth
             }
             
             if(allIncluded)
-                count += barCount; // could be off by one when the datapoints could not be distributed evenly across all bars
+                count += bars[i].getTotalCount(); // could be off by one when the datapoints could not be distributed evenly across all bars
             else
             {
                 boolean included = false;
@@ -170,7 +175,7 @@ public class Equidepth
     
     public class Bar extends PositionList<Position>
     {
-        public int minX,maxX, minY,maxY;
+        public int minX,maxX, minY,maxY, count=0;
         
         public Bar()
         {
@@ -201,7 +206,14 @@ public class Equidepth
             if(p.getY() > maxY)
                 maxY = p.getY();
             
+            count++;
+            
             return super.add(p);
+        }
+        
+        public int getTotalCount()
+        {
+            return this.count;
         }
     }
 }

@@ -77,7 +77,7 @@ public class Cell extends Equidepth
         
         for(Bar b : this.getBars())
         {
-            s += "bar: x=["+b.minX+","+b.maxX+"], y=["+b.minY+","+b.maxY+"]\n";
+            s += "bar ("+b.count+"): x=["+b.minX+","+b.maxX+"], y=["+b.minY+","+b.maxY+"]\n";
         }
         
         return s;
