@@ -121,6 +121,18 @@ class ControlPanel extends JPanel implements ActionListener
                 this.results.setText(this.results.getText()+"\nQuery: "+queryString+"\n"
                         + " Estimate:\t"+est+" ("+((time2-time1)/1000f)+" us)\n"
                         + " Exact:\t"   +det+" ("+((time3-time2)/1000f)+" us)\n");
+                
+                if(false && query.size() == 1)
+                {
+                    int absX = query.first().getX();
+                    int absY = query.first().getY();
+                    int relX = absX%this.histogram.getCellSize();
+                    int relY = absY%this.histogram.getCellSize();
+                    if(relY == 0)
+                        relY = 1;
+                    
+                    System.out.println(absX+","+absY+","+relX+","+relY+","+est+","+det+","+(est/(double)det));
+                }
 
                 avgEst += est;
                 avgDet += det;
@@ -147,5 +159,11 @@ class ControlPanel extends JPanel implements ActionListener
                 + " Estimate:\t"+Math.round(avgEst*100)/100f+" ("+Math.round(avgEstTime*1000)/1000f+" us)\n"
                 + " Exact:\t"   +Math.round(avgDet*100)/100f+" ("+Math.round(avgDetTime*1000)/1000f+" us)\n"
                 + (fails>0? " Fails:\t"   +fails +"\n" : ""));
+    }
+    
+    public void reset(Histogram hist)
+    {
+        this.histogram = hist;
+        this.results.setText("");
     }
 }

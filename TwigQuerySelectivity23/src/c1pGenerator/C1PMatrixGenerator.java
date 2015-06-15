@@ -150,50 +150,127 @@ public class C1PMatrixGenerator
 	
 	public static C1PMatrix createMatrix()
 	{
-		int leafs = 5000;
+		int leafs = 300000;
+        int treeHeight = 100;
+        Distribution branchingDist = new CustomBranchingDistribution();
+        double leafDepthVar = 0.3;
+        double interconnectedness = 0.3;
+        
 		System.out.println("leafs: " + leafs);
-		return createTree(leafs, leafs, 0.2);
+		return createTree(treeHeight, leafs, branchingDist, leafDepthVar, interconnectedness);
 	}
 	
-	private static C1PMatrix createTree(int treeHeight, int leafs, double branchingChance)
+    /**
+     * 
+     * @param treeHeight
+     * @param leafs
+     * @param branchingChance
+     * @param leafDepthVar in (0,1], 1 means all leafs are at the same height (maximal), 0.5 means
+     * about half the leafs are at maximal depth, 0.25 at maximal-1, 0.125 at max-2, etc.
+     * @return 
+     */
+	private static C1PMatrix createTree(int treeHeight, int leafs, Distribution branchingDist, double leafDepthVar, double interconnectedness)
 	{
 		C1PMatrix r = new C1PMatrix();
 		
 		//First add a set of leafs
 		C1PMatrix l = createLeafs(leafs);
 		r.addAll(l);
+        treeHeight--; //added leafs, one level completed
 		
 		//Keep creating parents until we have a large tree
 		int nextX = 0;
-		while(treeHeight >= 0)
+		while(treeHeight > 0)
 		{
-			int parentX = Integer.MAX_VALUE;
+			//System.out.println("Add new layer to graph, depth="+treeHeight);
+            int parentX = Integer.MAX_VALUE;
 			int parentY = Integer.MIN_VALUE;
+            int numChilds = 0;
+            boolean adopting = true;
+            C1PMatrix newParents = new C1PMatrix();
 			
 			for(C1PRow row : r)
 			{
-				if(row.getX() < nextX) //fast forward to the next leaf
-					continue;
-				
-				//Should we include the current row in the parent?
-				if(randDouble() <= branchingChance)
-					break;
+                boolean readyForNext = true;
+                do
+                {
+                    // unless changed in de code below, we'll be ready for the next potential child
+                    // at the end of this loop
+                    readyForNext = true;
+                    
+                    //System.out.print("("+parentX+"-"+parentY+") "+row.getX() + ", "+nextX+": ");
 
-				//Make the row a child of the parent
-				if(row.getX() < parentX)
-					parentX = row.getX();
-				if(row.getY() > parentY)
-					parentY = row.getY() + 1;
-				
-				nextX = row.getY() + 1;
+                    if(row.getX() < nextX) //fast forward to the next potential child
+                    {
+                        //System.out.println("already in family, skip");
+                        continue;
+                    }
+
+                    if(parentX == Integer.MAX_VALUE || parentY == Integer.MIN_VALUE) // if current parent has no childs yet
+                    {
+                        if(randDouble() > leafDepthVar) // leave some orphans to be adopted by parents higher up the tree
+                        {
+                            nextX++;
+                            //System.out.println("leave orphans, skip");
+                            continue;
+                        }
+                    }
+
+                    if(adopting && randDouble() > branchingDist.chanceForMore(numChilds)) //should we stop adopting?
+                    {
+                        adopting = false;
+                        //System.out.println(numChilds+" children already, let's stop");
+                    }
+
+                    if(adopting) // should we adopt the next child in line?
+                    {
+                        if(row.getX() == nextX)
+                        {
+                            //Make the row a child of the parent
+                            if(row.getX() < parentX)
+                                parentX = row.getX();
+
+                            parentY = row.getY();
+
+                            if(randDouble() > interconnectedness) // adopt definitively
+                            {
+                                nextX = parentY;
+                                numChilds++;
+                                //System.out.println("adopt definitively");
+                                //System.out.println("ADOPT: "+row.getX()+"-"+row.getY());
+                            }
+                            //else
+                                //System.out.println("adopt temptorarily, hoping a better candidate comes along");
+                        }
+                        else
+                        {
+                            nextX = parentY;
+                            numChilds++;
+                            readyForNext = false; // now we've decided about the previous, revisit the current
+                            //System.out.println("no better candidate, adopting last candidate definitively");
+                        }
+                    }
+                    else
+                    {
+                        //System.out.println("NEW NODE: "+parentX+"-"+parentY+" (depth="+treeHeight+" | childs "+numChilds+")");
+
+                        newParents.add(new C1PRow(null, parentX, parentY));
+                        nextX = parentY;
+                        parentX = Integer.MAX_VALUE;
+                        parentY = Integer.MIN_VALUE;
+                        numChilds = 0;
+                        adopting = true;
+                        
+                        //revisit the current child
+                        readyForNext = false;
+                    }
+                }
+                while(!readyForNext);
 			}
-			
-			//If no parent was found, continue
-			if(parentX == Integer.MAX_VALUE || parentY == Integer.MIN_VALUE)
-				continue;
-			
-			r.add(new C1PRow(null, parentX, parentY));
-			nextX = randInt(0, r.getMaxX());
+            
+            r.addAll(newParents);
+            newParents.clear();
+			nextX = 0;
 			treeHeight--;
 		}
 				

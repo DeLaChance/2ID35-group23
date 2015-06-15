@@ -212,4 +212,12 @@ class HistogramView extends JPanel implements MouseListener, MouseMotionListener
     {
         
     }
+
+    void reset(Histogram histogram)
+    {
+        this.histogram = histogram;
+        this.selectX=0;
+        this.selectY=0;
+        this.repaint();
+    }
 }

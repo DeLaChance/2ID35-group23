@@ -100,17 +100,26 @@ public class Equidepth
         
         for(int i=0; i<bars.length; i++)
         {
-            boolean included = false;
-            
-            for(QueryPoint qp : qps)
+            if(bars[i].count != 0) //skip empty bars;
             {
-                included = bars[i].maxX >= qp.getX() && bars[i].minY <= qp.getY();
-                if(included)
-                    break;
+                //boolean included = false;
+                QueryPoint p = null;
+
+                for(QueryPoint qp : qps)
+                {
+                    if(bars[i].maxX >= qp.getX() && bars[i].minY <= qp.getY())
+                    {
+                        p = qp;
+                        break;
+                    }
+                }
+
+                if(p != null)
+                    count += 0.5+ //rounding
+                            Math.min(1,(bars[i].maxX-p.getX())/(double)(bars[i].maxX-bars[i].minX))*
+                            Math.min(1,(p.getY()-bars[i].minY)/(double)(bars[i].maxY-bars[i].minY))*
+                            bars[i].getTotalCount();
             }
-            
-            if(included)
-                count += bars[i].getTotalCount();
         }
         
         return count;
@@ -132,7 +141,7 @@ public class Equidepth
             }
             
             if(allIncluded)
-                count += bars[i].getTotalCount(); // could be off by one when the datapoints could not be distributed evenly across all bars
+                count += bars[i].getTotalCount();
             else
             {
                 boolean included = false;

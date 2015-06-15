@@ -6,6 +6,7 @@
 
 package hist.debugView;
 
+import c1p.C1PMatrix;
 import hist.Cell;
 import hist.Histogram;
 import java.awt.BorderLayout;
@@ -21,9 +22,10 @@ import javax.swing.JTextArea;
  *
  * @author huib
  */
-public class MainView extends JFrame implements CellObserver
+public class MainView extends JFrame implements CellObserver, newGraphListener
 {
     private Histogram histogram;
+    private HistogramView hv;
     
     public MainView(Histogram hist)
     {
@@ -33,7 +35,7 @@ public class MainView extends JFrame implements CellObserver
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1200, 800);
         
-        HistogramView hv = new HistogramView(hist);
+        hv = new HistogramView(hist);
         hv.addCellObserver(this);
         
         Container cp = this.getContentPane();
@@ -48,9 +50,19 @@ public class MainView extends JFrame implements CellObserver
     {
         JPanel d = new JPanel();
         d.setLayout(new GridLayout(2,1));
+        //d.add(this.getGraphCreator());
         d.add(this.getDetailTextArea());
         d.add(this.getControlPanel());
         return d;
+    }
+    
+    private GraphCreateForm graphCreator;
+    private GraphCreateForm getGraphCreator()
+    {
+        if(this.graphCreator == null)
+            this.graphCreator = new GraphCreateForm(this);
+        
+        return this.graphCreator;
     }
     
     private JTextArea detailTextArea;
@@ -73,7 +85,7 @@ public class MainView extends JFrame implements CellObserver
         return c;
     }
     
-    private Container controlPanel;
+    private ControlPanel controlPanel;
     private Container getControlPanel()
     {
         if(controlPanel == null)
@@ -104,5 +116,17 @@ public class MainView extends JFrame implements CellObserver
     {
         this.selectedCell = c;
         updateCellInfo();
+    }
+
+    @Override
+    public void newGraph(C1PMatrix m)
+    {
+        histogram = new Histogram(m);
+        
+        this.hv.reset(histogram);
+        this.controlPanel.reset(histogram);
+        this.detailTextArea.setText(this.getDetailText());
+        this.selectedCell = null;
+        this.cellInfo = "No cell selected";
     }
 }
