@@ -96,6 +96,7 @@ class ControlPanel extends JPanel implements ActionListener
     {
         double avgEst=0, avgDet=0, avgEstTime=0, avgDetTime=0;
         int fails = 0;
+        boolean estFirst = true;
         
         for(int i=0; i<queryCount; i++)
         {
@@ -107,22 +108,42 @@ class ControlPanel extends JPanel implements ActionListener
                 PositionList<QueryPoint> query = new PositionList<>();
                 query.add(qp);
 
-                long time1 = System.nanoTime();
-                int est = this.histogram.estimateCount(query);
-                long time2 = System.nanoTime();
-                int det = this.histogram.determineCount(query);
-                long time3 = System.nanoTime();
+                long time1, time2, time3, time4;
+                int est, det;
+                if(estFirst)
+                {
+                    time1 = System.nanoTime();
+                    est = this.histogram.estimateCount(query);
+                    time2 = System.nanoTime();
+                    time3 = System.nanoTime();
+                    det = this.histogram.determineCount(query);
+                    time4 = System.nanoTime();
+                    
+                    estFirst = false;
+                }
+                else
+                {
+                    time3 = System.nanoTime();
+                    det = this.histogram.determineCount(query);
+                    time4 = System.nanoTime();
+                    time1 = System.nanoTime();
+                    est = this.histogram.estimateCount(query);
+                    time2 = System.nanoTime();
+                    
+                    estFirst = true;
+                }
 
                 String queryString = "{";
                 for(QueryPoint qpoint : query)
                     queryString += "("+qpoint.getX()+","+qpoint.getY()+")";
                 queryString += "}";
 
-                this.results.setText(this.results.getText()+"\nQuery: "+queryString+"\n"
+                String old = this.results.getText().substring(Math.max(0,this.results.getText().length()-1000));
+                this.results.setText(old+"\nQuery: "+queryString+"\n"
                         + " Estimate:\t"+est+" ("+((time2-time1)/1000f)+" us)\n"
-                        + " Exact:\t"   +det+" ("+((time3-time2)/1000f)+" us)\n");
+                        + " Exact:\t"   +det+" ("+((time4-time3)/1000f)+" us)\n");
                 
-                if(false && query.size() == 1)
+                if(query.size() == 1)
                 {
                     int absX = query.first().getX();
                     int absY = query.first().getY();
@@ -131,13 +152,13 @@ class ControlPanel extends JPanel implements ActionListener
                     if(relY == 0)
                         relY = 1;
                     
-                    System.out.println(absX+","+absY+","+relX+","+relY+","+est+","+det+","+(est/(double)det));
+                    System.out.println(absX+","+absY+","+relX+","+relY+","+est+","+det+","+(est/(double)det)+","+((time2-time1)/1000f)+","+((time4-time3)/1000f));
                 }
 
                 avgEst += est;
                 avgDet += det;
                 avgEstTime += (time2-time1)/1000f;
-                avgDetTime += (time3-time2)/1000f;
+                avgDetTime += (time4-time3)/1000f;
             }
             catch(Exception ex)
             {
@@ -146,7 +167,7 @@ class ControlPanel extends JPanel implements ActionListener
             }
         }
         
-        if(queryCount > 0)
+        if(queryCount-fails > 0)
         {
             avgEst     /=queryCount-fails;
             avgDet     /=queryCount-fails;
