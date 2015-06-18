@@ -126,10 +126,138 @@ public class TarjanTest {
         G2.print();
         
         assertEquals(SCCs.size(), 5);
-        assertEquals(G2.getNodes().size(), 4);
         
     }    
     
+    @Test    
+    public void testRunTarjan3() 
+    {
+        GraphNode[] nodes = new GraphNode[5];
+        for(int i = 0; i < 5; i++)
+            nodes[i] = new GraphNode(null, i);
+        
+        GraphEdge[] edges = new GraphEdge[7];
+        edges[0] = new GraphEdge(new Pair(1,0));
+        edges[1] = new GraphEdge(new Pair(1,2));
+        edges[2] = new GraphEdge(new Pair(2,3));
+        edges[3] = new GraphEdge(new Pair(3,2));
+        edges[4] = new GraphEdge(new Pair(3,1));
+        edges[5] = new GraphEdge(new Pair(1,4));
+        edges[6] = new GraphEdge(new Pair(4,3));
+        
+        Graph G = new Graph();
+        for(GraphNode n : nodes)
+        {
+            G.addNode(n);
+        }
+        for(GraphEdge e : edges)
+        {
+            G.addEdge(e);
+        }        
+        
+        ArrayList<HashSet<Integer>> SCCs = Tarjan.runTarjan(G);
+        assertEquals(SCCs.size(), 2);
+        
+        assertTrue(SCCs.get(0).size() == 1 || SCCs.get(1).size() == 1);
+        assertTrue(SCCs.get(0).size() == 4 || SCCs.get(1).size() == 4);
+    }
     
+    @Test    
+    public void testRunTarjan4() 
+    {
+        GraphNode[] nodes = new GraphNode[8];
+        for(int i = 0; i < 8; i++)
+            nodes[i] = new GraphNode(null, i);
+        
+        GraphEdge[] edges = new GraphEdge[13];
+        edges[0] = new GraphEdge(new Pair(0,1));
+        edges[1] = new GraphEdge(new Pair(0,3));
+        edges[2] = new GraphEdge(new Pair(0,2));
+        edges[3] = new GraphEdge(new Pair(1,2));
+        edges[4] = new GraphEdge(new Pair(1,3));
+        edges[5] = new GraphEdge(new Pair(2,0));
+        edges[6] = new GraphEdge(new Pair(3,2));
+        edges[7] = new GraphEdge(new Pair(3,2));
+        edges[8] = new GraphEdge(new Pair(1,4));
+        edges[9] = new GraphEdge(new Pair(4,6));
+        edges[10] = new GraphEdge(new Pair(6,7));
+        edges[11] = new GraphEdge(new Pair(7,5));
+        edges[12] = new GraphEdge(new Pair(5,4));
+        
+        Graph G = new Graph();
+        for(GraphNode n : nodes)
+        {
+            G.addNode(n);
+        }
+        for(GraphEdge e : edges)
+        {
+            G.addEdge(e);
+        }        
+        
+        ArrayList<HashSet<Integer>> SCCs = Tarjan.runTarjan(G);
+        assertEquals(SCCs.size(), 2);
+        
+        assertTrue(SCCs.get(0).size() == 4 && SCCs.get(1).size() == 4);
+    }    
+    
+    @Test    
+    public void testRunTarjan5() 
+    {
+        GraphNode[] nodes = new GraphNode[8];
+        for(int i = 0; i < 8; i++)
+            nodes[i] = new GraphNode(null, i);
+        
+        GraphEdge[] edges = new GraphEdge[6];
+        edges[0] = new GraphEdge(new Pair(0,1));
+        edges[1] = new GraphEdge(new Pair(0,2));
+        edges[2] = new GraphEdge(new Pair(0,3));
+        edges[3] = new GraphEdge(new Pair(1,4));
+        edges[4] = new GraphEdge(new Pair(1,5));
+        edges[5] = new GraphEdge(new Pair(2,6));
+
+        Graph G = new Graph();
+        for(GraphNode n : nodes)
+        {
+            G.addNode(n);
+        }
+        for(GraphEdge e : edges)
+        {
+            G.addEdge(e);
+        }        
+        
+        ArrayList<HashSet<Integer>> SCCs = Tarjan.runTarjan(G);
+        assertEquals(SCCs.size(), 8);
+        
+
+    }      
+ 
+    @Test    
+    public void testRunTarjan6() 
+    {
+        GraphNode[] nodes = new GraphNode[5];
+        for(int i = 0; i < 5; i++)
+            nodes[i] = new GraphNode(null, i);
+        
+        GraphEdge[] edges = new GraphEdge[4];
+        edges[0] = new GraphEdge(new Pair(0,1));
+        edges[1] = new GraphEdge(new Pair(0,2));
+        edges[2] = new GraphEdge(new Pair(0,3));
+        edges[3] = new GraphEdge(new Pair(0,4));
+
+        Graph G = new Graph();
+        for(GraphNode n : nodes)
+        {
+            G.addNode(n);
+        }
+        for(GraphEdge e : edges)
+        {
+            G.addEdge(e);
+        }        
+        
+        ArrayList<HashSet<Integer>> SCCs = Tarjan.runTarjan(G);
+        assertEquals(SCCs.size(), 5);
+        
+
+    }    
     
 }

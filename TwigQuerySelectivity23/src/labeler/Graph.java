@@ -248,10 +248,6 @@ public class Graph {
     public HashMap<Integer,Integer> computeFrequenciesList()
     {
         HashMap<Integer,Integer> A = new HashMap<Integer,Integer>();
-        System.out.println("|V|=" + this.getNodes().size());
-        System.out.println("|E|=" + this.getNumberOfEdges());
-        System.out.println("Number of out edges | Frequency");
-        
         for(Integer vkey : this.nodes.keySet())
         {
             Integer frequency = this.outEdges.get(vkey).size();

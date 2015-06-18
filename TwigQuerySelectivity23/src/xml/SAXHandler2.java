@@ -31,6 +31,7 @@ public class SAXHandler2 extends DefaultHandler {
     private int size = 0;
     private HashMap<String, HashSet<String>> tagTypes;
     private HashMap<String, Boolean> isEdge;
+    private int noCustomEdges = 0;
     
     public SAXHandler2()
     {
@@ -150,6 +151,7 @@ public class SAXHandler2 extends DefaultHandler {
               {
                   GraphEdge edge = new GraphEdge(new Pair(counter, k));
                   g.addEdge(edge);
+                  noCustomEdges++;
               }
             }
         }
@@ -165,9 +167,12 @@ public class SAXHandler2 extends DefaultHandler {
     public void endElement(String uri, String localName, 
                            String qName) throws SAXException 
     {
-        if( state == 1 && !isEdge(qName) )
+        if( state == 1 )
         {
-            st.pop();
+            if(!isEdge(qName))
+            {
+                st.pop();
+            }
         }
 
     }
@@ -186,6 +191,11 @@ public class SAXHandler2 extends DefaultHandler {
     public HashMap<String, Boolean> getEdgeMap()
     {
         return this.isEdge;
+    }
+    
+    public int getNumberOfCustomEdges()
+    {
+        return this.noCustomEdges;
     }
     
 }

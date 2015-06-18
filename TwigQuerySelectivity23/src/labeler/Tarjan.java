@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
-import org.javatuples.Triplet;
+
 
 /**
  * TODO: Documentation
@@ -17,7 +17,11 @@ import org.javatuples.Triplet;
 public class Tarjan {
     
     static int index;
-    static HashMap<Integer, Triplet<Integer, Integer, Boolean>> nodeData;
+    //static HashMap<Integer, Triplet<Integer, Integer, Boolean>> nodeData;
+    static HashMap<Integer, Integer> indexMap;
+    static HashMap<Integer, Integer> lowLinkMap;
+    static HashSet<Integer> onStack;
+    static HashSet<Integer> isDefined;
     static Stack S;
     static ArrayList<HashSet<Integer>> SCCs;
     
@@ -29,16 +33,17 @@ public class Tarjan {
         HashMap<Integer, ArrayList<Integer>> edges = new HashMap<Integer, ArrayList<Integer>>();
         ArrayList<GraphNode> nodes = new ArrayList<GraphNode>();
         int j = 0;
-        
+
         for(HashSet<Integer> SCC : SCCs )
         {
             GraphNode n = new GraphNode(null,j);
             nodes.add(n);
-            //System.out.println("SCC-" + j + " is of size; " + SCC.size());
+            
             edges.put(j, new ArrayList<Integer>());
             j++;
         }
-        
+
+      
         j = 0;
         for(HashSet<Integer> SCC : SCCs )
         {
@@ -93,105 +98,80 @@ public class Tarjan {
         return G2;
     }
     
+       
     public static ArrayList<HashSet<Integer>> runTarjan(Graph G)
     {
-        index = 0;
-        S = new Stack();
-        // index, lowlink, onstack
-        nodeData = new HashMap<Integer, Triplet<Integer, Integer, Boolean>>();
-        SCCs = new ArrayList<HashSet<Integer>>();
+        // Clear all variables
+        reset();
         
-        for(Integer vkey : G.getNodes())
+        for(Integer node1 : G.getNodes() )
         {
-            if( !nodeData.containsKey(vkey) )
+            if( !isDefined.contains(node1) )
             {
-                strongConnect(vkey, G);
+                isDefined.add(node1);
+                strongConnect(node1, G);
             }
         }
         
         return SCCs;
     }
     
-    private static void strongConnect(Integer vkey, Graph G)
+    private static void reset()
     {
-        System.out.println("strongConnect: vkey: " + vkey);
-        if( !nodeData.containsKey(vkey) )
-        {
-            nodeData.put(vkey, new Triplet(index, index, true));
-        }
-        else
-        {
-            nodeData.remove(vkey);
-            nodeData.put(vkey, new Triplet(index, index, true));
-        }
-        
+        index = 0;
+        S = new Stack();
+        isDefined = new HashSet<Integer>();
+        indexMap = new HashMap<Integer, Integer>();
+        lowLinkMap = new HashMap<Integer, Integer>();
+        onStack = new HashSet<Integer>();   
+        SCCs = new ArrayList<HashSet<Integer>>();
+    }
+
+    private static void strongConnect(Integer node1, Graph G)
+    {  
+        indexMap.put(node1, index);
+        lowLinkMap.put(node1, index);
         index += 1;
-        S.push( vkey );
         
-        ArrayList<GraphEdge> outE = G.getOutNeighbours(vkey);
-        for(GraphEdge e : outE)
+        onStack.add(node1);
+        S.push(node1);
+        
+        ArrayList<GraphEdge> outE = G.getOutNeighbours(node1);
+        for(GraphEdge outEdge : outE )
         {
-            Integer wkey = e.getRight();
-            if( !nodeData.containsKey(wkey) )
+            Integer node2 = outEdge.getRight();
+            
+            if( !isDefined.contains(node2) )
             {
-                strongConnect(wkey, G);
-                Integer minLink = Math.min(nodeData.get(vkey).getValue1(), 
-                    nodeData.get(wkey).getValue1());
-                System.out.println("strongConnect minLink: " + minLink + " vkey: " + vkey);
-                updateLL(vkey, minLink);
+                isDefined.add(node2);
+                strongConnect(node2, G);
+                int minIndex = Math.min(lowLinkMap.get(node1), lowLinkMap.get(node2));
+                lowLinkMap.put(node1, minIndex);
             }
             else
             {
-                if( nodeData.get(wkey).getValue2() )
+                if( onStack.contains(node2) )
                 {
-                    Integer minLink = Math.min(nodeData.get(vkey).getValue1(), 
-                        nodeData.get(wkey).getValue0());                
-                    updateLL(vkey, minLink);
+                    int minIndex = Math.min(lowLinkMap.get(node1), indexMap.get(node2));
+                    lowLinkMap.put(node1, minIndex);
                 }
             }
         }
         
-        System.out.println("strongConnect: " + nodeData.get(vkey).getValue0() + "," + nodeData.get(vkey).getValue1());
-        if( nodeData.get(vkey).getValue0() == nodeData.get(vkey).getValue1() )
+        if( indexMap.get(node1).equals(lowLinkMap.get(node1)) )
         {
-            System.out.println("vkey: " + vkey);
             HashSet<Integer> SCC = new HashSet<Integer>();
+            Integer node2 = null;
             
-            Integer k = (Integer) S.pop();
-            System.out.println("k: " + k);
-            while( k != vkey )
+            do
             {
-                updateOS(k, false);
-                SCC.add(k);
-                k = (Integer) S.pop();
+                node2 = (Integer) S.pop();
+                onStack.remove(node2);
+                SCC.add(node2);
             }
-            SCC.add(k);
+            while(node1 != node2);
             SCCs.add(SCC);
         }
+
     }
-    
-    private static void updateIndex(Integer k, Integer i)
-    {
-        Triplet<Integer, Integer, Boolean> t = new Triplet(i,nodeData.get(k).getValue1(),nodeData.get(k).getValue2());
-        nodeData.remove(k);
-        nodeData.put(k, t);
-    }
-    
-    private static void updateLL(Integer k, Integer i)
-    {
-        //System.out.println("updateLL: " + i);
-        //System.out.println(nodeData.get(k));
-        Triplet<Integer, Integer, Boolean> t = new Triplet(nodeData.get(k).getValue0(),i,nodeData.get(k).getValue2());
-        //System.out.println(t);
-        nodeData.remove(k);
-        nodeData.put(k, t);
-    }    
-    
-    private static void updateOS(Integer k, Boolean i)
-    {
-        Triplet<Integer, Integer, Boolean> t = new Triplet(nodeData.get(k).getValue0(),nodeData.get(k).getValue1(),i);
-        nodeData.remove(k);
-        nodeData.put(k, t);
-    } 
-    
 }
