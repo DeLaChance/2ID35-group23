@@ -114,6 +114,7 @@ public class Tarjan {
     
     private static void strongConnect(Integer vkey, Graph G)
     {
+        System.out.println("strongConnect: vkey: " + vkey);
         if( !nodeData.containsKey(vkey) )
         {
             nodeData.put(vkey, new Triplet(index, index, true));
@@ -136,6 +137,7 @@ public class Tarjan {
                 strongConnect(wkey, G);
                 Integer minLink = Math.min(nodeData.get(vkey).getValue1(), 
                     nodeData.get(wkey).getValue1());
+                System.out.println("strongConnect minLink: " + minLink + " vkey: " + vkey);
                 updateLL(vkey, minLink);
             }
             else
@@ -149,12 +151,14 @@ public class Tarjan {
             }
         }
         
-        if( nodeData.get(vkey).getValue0() == nodeData.get(vkey).getValue1() && 
-            nodeData.containsKey(vkey) )
+        System.out.println("strongConnect: " + nodeData.get(vkey).getValue0() + "," + nodeData.get(vkey).getValue1());
+        if( nodeData.get(vkey).getValue0() == nodeData.get(vkey).getValue1() )
         {
+            System.out.println("vkey: " + vkey);
             HashSet<Integer> SCC = new HashSet<Integer>();
             
             Integer k = (Integer) S.pop();
+            System.out.println("k: " + k);
             while( k != vkey )
             {
                 updateOS(k, false);
@@ -175,7 +179,10 @@ public class Tarjan {
     
     private static void updateLL(Integer k, Integer i)
     {
+        //System.out.println("updateLL: " + i);
+        //System.out.println(nodeData.get(k));
         Triplet<Integer, Integer, Boolean> t = new Triplet(nodeData.get(k).getValue0(),i,nodeData.get(k).getValue2());
+        //System.out.println(t);
         nodeData.remove(k);
         nodeData.put(k, t);
     }    

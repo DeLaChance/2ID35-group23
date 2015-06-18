@@ -244,4 +244,27 @@ public class Graph {
     {
         return this.noOfEdges;
     }
+    
+    public HashMap<Integer,Integer> computeFrequenciesList()
+    {
+        HashMap<Integer,Integer> A = new HashMap<Integer,Integer>();
+        System.out.println("|V|=" + this.getNodes().size());
+        System.out.println("|E|=" + this.getNumberOfEdges());
+        System.out.println("Number of out edges | Frequency");
+        
+        for(Integer vkey : this.nodes.keySet())
+        {
+            Integer frequency = this.outEdges.get(vkey).size();
+            int val = 0;
+            
+            if( A.containsKey(frequency) )
+            {
+                val = A.get(frequency);
+            }
+            
+            A.put(frequency, val+1);
+        }
+        
+        return A;
+    }
 }
