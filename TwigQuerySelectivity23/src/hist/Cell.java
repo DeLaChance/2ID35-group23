@@ -62,11 +62,24 @@ public class Cell extends Equidepth
         if(!this.histogramValid)
             this.rebuildHistogram();
         
-        return super.getCount(qps, 2);
+        return super.getCount(qps, 1);
     }
     
     public PositionList<Position> getDatapoints()
     {
         return this.datapoints;
+    }
+    
+    @Override
+    public String toString()
+    {
+        String s = this.getCellCount() + " datapoints\n";
+        
+        for(Bar b : this.getBars())
+        {
+            s += "bar ("+b.count+"): x=["+b.minX+","+b.maxX+"], y=["+b.minY+","+b.maxY+"]\n";
+        }
+        
+        return s;
     }
 }

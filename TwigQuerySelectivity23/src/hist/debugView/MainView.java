@@ -6,6 +6,7 @@
 
 package hist.debugView;
 
+import c1p.C1PMatrix;
 import hist.Cell;
 import hist.Histogram;
 import java.awt.BorderLayout;
@@ -14,14 +15,17 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author huib
  */
-public class MainView extends JFrame implements CellObserver
+public class MainView extends JFrame implements CellObserver, newGraphListener
 {
     private Histogram histogram;
+    private HistogramView hv;
     
     public MainView(Histogram hist)
     {
@@ -31,7 +35,7 @@ public class MainView extends JFrame implements CellObserver
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1200, 800);
         
-        HistogramView hv = new HistogramView(hist);
+        hv = new HistogramView(hist);
         hv.addCellObserver(this);
         
         Container cp = this.getContentPane();
@@ -46,19 +50,64 @@ public class MainView extends JFrame implements CellObserver
     {
         JPanel d = new JPanel();
         d.setLayout(new GridLayout(2,1));
-        d.add(new JLabel("Histogram\n"+this.histogram.getDatapoints().size()+" points"));
-        d.add(this.getCellInfo());
+        //d.add(this.getGraphCreator());
+        d.add(this.getDetailTextArea());
+        d.add(this.getControlPanel());
         return d;
     }
     
-    private JLabel cellInfo = new JLabel("Cell");
-    private Container getCellInfo()
+    private GraphCreateForm graphCreator;
+    private GraphCreateForm getGraphCreator()
     {
-        return cellInfo;
+        if(this.graphCreator == null)
+            this.graphCreator = new GraphCreateForm(this);
+        
+        return this.graphCreator;
+    }
+    
+    private JTextArea detailTextArea;
+    private Container getDetailTextArea()
+    {
+        if(this.detailTextArea == null)
+            this.detailTextArea = new JTextArea();
+        
+        this.detailTextArea.setText(this.getDetailText());
+        this.detailTextArea.setEditable(false);
+        this.detailTextArea.setColumns(20);
+        
+        Container details = new JScrollPane(this.detailTextArea);
+        Container c = new Container();
+        c.setLayout(new BorderLayout());
+        
+        c.add(new JLabel("Details"), BorderLayout.NORTH);
+        c.add(details, BorderLayout.CENTER);
+        
+        return c;
+    }
+    
+    private ControlPanel controlPanel;
+    private Container getControlPanel()
+    {
+        if(controlPanel == null)
+            controlPanel = new ControlPanel(this.histogram);
+        
+        return controlPanel;
+    }
+    
+    private String cellInfo = "No cell selected";
+    private String getDetailText()
+    {
+        return "Histogram\n"+
+                this.histogram.getDatapoints().size()+" datapoints\n"+
+                "\n"+
+                "Cell\n"+
+                cellInfo;
     }
     private void updateCellInfo()
     {
-        cellInfo.setText("Cell\n"+selectedCell.getDatapoints().size()+" points");
+        cellInfo = selectedCell.toString();
+        
+        this.detailTextArea.setText(this.getDetailText());
     }
 
     private Cell selectedCell;
@@ -67,5 +116,17 @@ public class MainView extends JFrame implements CellObserver
     {
         this.selectedCell = c;
         updateCellInfo();
+    }
+
+    @Override
+    public void newGraph(C1PMatrix m)
+    {
+        histogram = new Histogram(m);
+        
+        this.hv.reset(histogram);
+        this.controlPanel.reset(histogram);
+        this.detailTextArea.setText(this.getDetailText());
+        this.selectedCell = null;
+        this.cellInfo = "No cell selected";
     }
 }

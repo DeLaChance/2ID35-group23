@@ -104,7 +104,7 @@ public class TriangleGrid<T> implements Iterable<T>
         // l= number of cells positioned left of the cell containing x.
         int l = x/cellSize;
         // d= number of cells below of the cell containing y.
-        int d = y/cellSize;
+        int d = (y-1)/cellSize;
         
         if(d < width/2)
             return new int[] {l, d + (width&1)};
@@ -123,12 +123,12 @@ public class TriangleGrid<T> implements Iterable<T>
         if(!isInGrid(x,y))
         {
             int[] p = convert(x,y);
-            throw new IllegalArgumentException("position ("+x+","+y+")->("+p[0]+","+p[1]+") not in grid");
+            throw new IllegalArgumentException("position ("+x+","+y+")->("+p[0]+","+p[1]+") not in grid (maxY="+maxY+", "+(y/cellSize)+" <?= "+(maxY/cellSize));
         }
     }
     public boolean isInGrid(int x, int y)
     {
-        return x<y && y <= maxY;
+        return x>=0 && y>=0 && x<y && (y-1)/cellSize <= maxY/cellSize;
     }
 
     /**
@@ -173,74 +173,7 @@ public class TriangleGrid<T> implements Iterable<T>
             @Override
             public Iterator<T> iterator()
             {
-                Iterator<QueryPoint> iterator = qps.iterator();
-                QueryPoint initialQp = null;
-                final int initialX, initialY;
-                if(iterator.hasNext())
-                {
-                    QueryPoint p = iterator.next();
-                    initialX = p.getX()/cellSize;
-                    initialY = (p.getY()+cellSize-1)/cellSize;
-                }
-                else
-                {
-                    initialX = width+1;
-                    initialY = width+1;
-                }
-                    
-                
-                return new Iterator<T>()
-                {
-                    private Iterator<QueryPoint> qpIt = iterator;
-                    private int x = initialX;
-                    private int y = initialY;
-                    private int cy= y;
-                    QueryPoint nextQp = initialQp;
-                    
-                    @Override
-                    public boolean hasNext()
-                    {
-                        return x > width;
-                    }
-
-                    @Override
-                    public T next()
-                    {
-                        T result = getCell(cellSize*x, cellSize*y);
-                        
-                        y--;
-                        
-                        if(y == x)
-                        {
-                            x++;
-                            y = cy;
-                            
-                            while(x == nextQp.getX()/cellSize)
-                            {
-                                if(y <= nextQp.getY()/cellSize)
-                                    cy = y = (nextQp.getY()+cellSize-1)/cellSize;
-
-                                if(iterator.hasNext())
-                                    nextQp = iterator.next();
-                                else
-                                    nextQp = null;
-                            }
-
-                            if(cy == x)
-                            {
-                                if(nextQp == null)
-                                    x = width+1;
-                                else
-                                {
-                                    x      = nextQp.getX()/cellSize;
-                                    cy = y = (nextQp.getY()+cellSize-1)/cellSize;
-                                }
-                            }
-                        }
-                        
-                        return result;
-                    }
-                };
+                return new SignificantCellsIterator(qps.iterator());
             }
         };
     }
@@ -286,5 +219,85 @@ public class TriangleGrid<T> implements Iterable<T>
         
         return s;
         //*/
+    }
+    
+    class SignificantCellsIterator implements Iterator<T>
+    {
+        private int x,y,cy;
+        private QueryPoint nextQp;
+        private final Iterator<QueryPoint> iterator;
+
+        public SignificantCellsIterator(Iterator<QueryPoint> it)
+        {
+            this.iterator = it;
+
+            // initial QueryPoint
+            if(iterator.hasNext())
+                this.nextQp = iterator.next();
+
+            if(this.nextQp == null)
+            {
+                this.x = width+1;
+                this.y = width+1;
+            }
+            else
+            {
+                this.x = nextQp.getX()/cellSize;
+                this.y = (nextQp.getY()+cellSize-1)/cellSize;
+            }
+            
+            // next QueryPoint
+            if(iterator.hasNext())
+                this.nextQp = iterator.next();
+            else
+                this.nextQp = null;
+
+            this.cy= y;
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return x <= width;
+        }
+
+        @Override
+        public T next()
+        {
+            T result = getCell(cellSize*x, cellSize*y);
+
+            y--;
+
+            if(y == x)
+            {
+                x++;
+                y = cy;
+                
+                if(nextQp != null)
+                    while(x == nextQp.getX()/cellSize)
+                    {
+                        if(y <= nextQp.getY()/cellSize)
+                            cy = y = (nextQp.getY()+cellSize-1)/cellSize;
+
+                        if(iterator.hasNext())
+                            nextQp = iterator.next();
+                        else
+                            nextQp = null;
+                    }
+
+                if(cy == x)
+                {
+                    if(nextQp == null)
+                        x = width+1;
+                    else
+                    {
+                        x      = nextQp.getX()/cellSize;
+                        cy = y = (nextQp.getY()+cellSize-1)/cellSize;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

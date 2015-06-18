@@ -60,9 +60,12 @@ class HistogramView extends JPanel implements MouseListener, MouseMotionListener
         int[] p2 = this.toScreenPosition(histogram.getMaxY(), 0);
         
         int s = this.histogram.getCellSize();
+        double normY = (y/(double)s%1);
+        if(normY == 0)
+            normY=1;
         
         r[0] = p1[0]+(int)((   x/(double)s%1 )*(p2[0]-p1[0]-10));
-        r[1] = p1[1]+(int)((1-(y/(double)s%1))*(p2[1]-p1[1]-10));
+        r[1] = p1[1]+(int)((1-  normY        )*(p2[1]-p1[1]-10));
         
         return r;
     }
@@ -208,5 +211,13 @@ class HistogramView extends JPanel implements MouseListener, MouseMotionListener
     public void mouseMoved(MouseEvent e)
     {
         
+    }
+
+    void reset(Histogram histogram)
+    {
+        this.histogram = histogram;
+        this.selectX=0;
+        this.selectY=0;
+        this.repaint();
     }
 }
