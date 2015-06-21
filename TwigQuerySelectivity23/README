@@ -1,0 +1,51 @@
+This tar contains a netbean java project and some additional files.
+
+The java code contains a couple of public static void main functions:
+TwigQuerySelectivity23.java
+	LUCIEN/MENNO, ff uitleg graag
+TestLabeling.java
+	LUCIEN/MENNO, ff uitleg graag
+Test.java
+	To start the gui, make sure all lines in the main function are
+	commented, except for line 44: showHistogram();
+	To start the cli, maku sure all lines in the main function are
+	commented, except for lines 32-40: testHistogram(...);
+	
+	GUI
+	The gui shows the histogram, and a detailed view for the equidepth
+	histogram within a selected cell (click on the cell to select).
+	The user can run an amount or random queries on the graph with a
+	small alteration in the code of
+	hist.debugView.ControlPanel#actionPerformed(). In the current
+	configuration a query is executed for _every_ datapoint in the
+	histogram.
+	To change the C1P generation settings see
+	c1pGeneration.C1PMatrixGenerator#createMatrix().
+	To change histogram parameters, see TwigQuerySelectivity23.java
+	line 24, and hist/Histogram.java line 22.
+	
+	CLI
+	usage:
+	java -jar build.jar 10 2000 0.5 0.3 20 [--summary]
+	to run 20 test queries on a graph with
+		treeHeight=10
+		numberOfLeafs=2000
+		leafDepthUniformity=0.5
+		interconnectedness=0.3
+	Add --summary to get only a single line with averages instead of
+	one line for each query.
+
+Some additional files:
+run_tests.sh and run_tests2.sh
+	Linux shell script to generate data for large sets of graphs. Make
+	the correct .jar file is in the correct place, it might be nessecary
+	to rebuild the jar with the source code configured to run as CLI.
+testresults/*.csv
+	output data from run_tests.sh and run_tests2.sh in csv.
+	format:
+	threeheigt, #leafs, depthUniformity, interconnectedness, queryCount, avgEstimation, avgActual, avgEstimationTime (us), avgExactCountTime (us), RMSE, NRMSE
+testresults/group.m
+	Octave script to create plots from SQL "group by"-like data
+	from the csv data.
+testresults/*.png
+	plots created with octave
