@@ -16,10 +16,6 @@ import labeler.PrimeLabeler;
 import labeler.Tarjan;
 import xml.SAXHandler2;
 
-/**
- *
- * @author lucien
- */
 public class TestLabeling {
 
     /**

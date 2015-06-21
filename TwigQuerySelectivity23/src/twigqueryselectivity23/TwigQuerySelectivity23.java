@@ -11,11 +11,6 @@ import org.xml.sax.SAXException;
 import xml.XMLReader;
 
 
-
-/**
- *
- * @author lucien
- */
 public class TwigQuerySelectivity23 {
 
     // number of cells in x and y direction (total # cells: (HIST_GRID_WIDTH+1)*HIST_GRID_WIDTH/2 )

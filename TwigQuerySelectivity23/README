@@ -1,10 +1,9 @@
 This tar contains a netbean java project and some additional files.
 
 The java code contains a couple of public static void main functions:
-TwigQuerySelectivity23.java
-	LUCIEN/MENNO, ff uitleg graag
 TestLabeling.java
-	LUCIEN/MENNO, ff uitleg graag
+	This class reads the set XML file in line 30, generates a graph from it and labels
+	all nodes and create the (custom) edges.
 Test.java
 	To start the gui, make sure all lines in the main function are
 	commented, except for line 44: showHistogram();
