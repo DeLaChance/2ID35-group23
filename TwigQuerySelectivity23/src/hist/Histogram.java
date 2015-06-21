@@ -19,7 +19,7 @@ public class Histogram extends TriangleGrid<Cell>
     
     public Histogram(PositionList<? extends Position> datapoints)
     {
-        super(TwigQuerySelectivity23.HIST_GRID_WIDTH, datapoints.getMaxY());
+        super(800, datapoints.getMaxY(), true);
         data = datapoints;
         
         this.populate(new ConcreteCellFactory(TwigQuerySelectivity23.HIST_CELL_BARS));

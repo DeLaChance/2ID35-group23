@@ -9,6 +9,7 @@ package hist.debugView;
 import c1pGenerator.C1PMatrixGenerator;
 import estimation.QueryPoint;
 import hist.Histogram;
+import hist.Position;
 import hist.PositionList;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -94,17 +95,20 @@ class ControlPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        double avgEst=0, avgDet=0, avgEstTime=0, avgDetTime=0;
+        double avgEst=0, avgDet=0, avgEstTime=0, avgDetTime=0, RMSE=0, NRMSE=0;
         int fails = 0;
         boolean estFirst = true;
+        int i = 0;
         
-        for(int i=0; i<queryCount; i++)
+        //for(int i=0; i<queryCount; i++)
+        for(Position p : this.histogram.getDatapoints())
         {
             try
             {
-                int[] q = C1PMatrixGenerator.randPosition(this.histogram.getMaxY());
+                //int[] q = C1PMatrixGenerator.randPosition(this.histogram.getMaxY());
                 
-                QueryPoint qp = new QueryPoint(q[0], q[1]);
+                //QueryPoint qp = new QueryPoint(q[0], q[1]);
+                QueryPoint qp = new QueryPoint(p.getX(), p.getY());
                 PositionList<QueryPoint> query = new PositionList<>();
                 query.add(qp);
 
@@ -143,7 +147,7 @@ class ControlPanel extends JPanel implements ActionListener
                         + " Estimate:\t"+est+" ("+((time2-time1)/1000f)+" us)\n"
                         + " Exact:\t"   +det+" ("+((time4-time3)/1000f)+" us)\n");
                 
-                if(query.size() == 1)
+                if(false && query.size() == 1)
                 {
                     int absX = query.first().getX();
                     int absY = query.first().getY();
@@ -157,20 +161,28 @@ class ControlPanel extends JPanel implements ActionListener
 
                 avgEst += est;
                 avgDet += det;
+                RMSE += (est-det)*(est-det);
                 avgEstTime += (time2-time1)/1000f;
                 avgDetTime += (time4-time3)/1000f;
+                
+                i++;
             }
             catch(Exception ex)
             {
                 System.err.println(ex.getMessage());
                 fails++;
             }
+            
+            if(i%500 == 0)
+                System.out.println(i+"/"+this.histogram.getDatapoints().size());
         }
         
         if(queryCount-fails > 0)
         {
             avgEst     /=queryCount-fails;
             avgDet     /=queryCount-fails;
+            RMSE       /=queryCount;
+            NRMSE       =RMSE/avgDet;
             avgEstTime /=queryCount-fails;
             avgDetTime /=queryCount-fails;
         }
@@ -179,6 +191,8 @@ class ControlPanel extends JPanel implements ActionListener
         this.results.setText(this.results.getText()+"\nAverages over "+queryCount+" queries:\n"
                 + " Estimate:\t"+Math.round(avgEst*100)/100f+" ("+Math.round(avgEstTime*1000)/1000f+" us)\n"
                 + " Exact:\t"   +Math.round(avgDet*100)/100f+" ("+Math.round(avgDetTime*1000)/1000f+" us)\n"
+                + " RMSE :\t"   +Math.round(RMSE*1000)/1000f+"\n"
+                + " NRMSE:\t"   +Math.round(NRMSE*1000)/1000f+"\n"
                 + (fails>0? " Fails:\t"   +fails +"\n" : ""));
     }
     

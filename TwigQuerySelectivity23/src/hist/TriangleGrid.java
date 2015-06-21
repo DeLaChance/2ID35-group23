@@ -52,10 +52,10 @@ public class TriangleGrid<T> implements Iterable<T>
     private int width; // number of cells in x (or y) direction, width=height
     private int cellSize;
     
-    public TriangleGrid(int maxWidth, int maxY)
+    public TriangleGrid(int maxWidth, int maxY, boolean size)
     {
         this.maxY = maxY;
-        this.cellSize = (maxY+maxWidth-1)/maxWidth;
+        this.cellSize = size? maxWidth : (maxY+maxWidth-1)/maxWidth;
         
         
         this.width = (maxY+cellSize-1)/cellSize;

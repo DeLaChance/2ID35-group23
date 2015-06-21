@@ -150,13 +150,12 @@ public class C1PMatrixGenerator
 	
 	public static C1PMatrix createMatrix()
 	{
-		int leafs = 300000;
+		int leafs = 80000;
         int treeHeight = 100;
         Distribution branchingDist = new CustomBranchingDistribution();
         double leafDepthVar = 0.3;
         double interconnectedness = 0.3;
         
-		System.out.println("leafs: " + leafs);
 		return createTree(treeHeight, leafs, branchingDist, leafDepthVar, interconnectedness);
 	}
 	
@@ -169,7 +168,7 @@ public class C1PMatrixGenerator
      * about half the leafs are at maximal depth, 0.25 at maximal-1, 0.125 at max-2, etc.
      * @return 
      */
-	private static C1PMatrix createTree(int treeHeight, int leafs, Distribution branchingDist, double leafDepthVar, double interconnectedness)
+	public static C1PMatrix createTree(int treeHeight, int leafs, Distribution branchingDist, double leafDepthVar, double interconnectedness)
 	{
 		C1PMatrix r = new C1PMatrix();
 		
