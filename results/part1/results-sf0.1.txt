@@ -1,14 +1,180 @@
+ant -f "/home/lucien/Secret/Documents/Studies/Year 4/Q4/2ID35 - Database technology/project/2ID35-group23/TwigQuerySelectivity23" -Djavac.includes=twigqueryselectivity23/TestLabeling.java -Dnb.internal.action.name=run.single -Drun.class=twigqueryselectivity23.TestLabeling run-single
+init:
+Deleting: /home/lucien/Secret/Documents/Studies/Year 4/Q4/2ID35 - Database technology/project/2ID35-group23/TwigQuerySelectivity23/build/built-jar.properties
+deps-jar:
+Updating property file: /home/lucien/Secret/Documents/Studies/Year 4/Q4/2ID35 - Database technology/project/2ID35-group23/TwigQuerySelectivity23/build/built-jar.properties
+Compiling 1 source file to /home/lucien/Secret/Documents/Studies/Year 4/Q4/2ID35 - Database technology/project/2ID35-group23/TwigQuerySelectivity23/build/classes
+compile-single:
+run-single:
 Input file: ../datasets/xmark-sf0.1.xml
 First round complete
 Total number of tags: 167864
 Number of distinct tags: 74
 Second round complete
-Parsing of graph done after: 1853ms
+Number of custom edges: 30550
+
+---------
+
+Parsing of graph G=(V,E) done after: 1890ms
 |V|=137215
 |E|=167764
-Creation of Tarjan-graph: 2694ms
-Prime-labeled graph: 2698ms
-Creation of matrix: 2701ms
+
+---------
+
+
+------
+
+SCC-0 is of size: 1
+SCC-1 is of size: 1
+SCC-2 is of size: 1
+SCC-3 is of size: 1
+SCC-4 is of size: 1
+SCC-5 is of size: 1
+SCC-6 is of size: 1
+SCC-7 is of size: 1
+SCC-8 is of size: 1
+SCC-9 is of size: 1
+SCC-10 is of size: 1
+SCC-11 is of size: 1
+SCC-12 is of size: 1
+SCC-13 is of size: 1
+SCC-14 is of size: 1
+SCC-15 is of size: 1
+SCC-16 is of size: 1
+SCC-17 is of size: 1
+SCC-18 is of size: 1
+SCC-19 is of size: 1
+SCC-20 is of size: 1
+SCC-21 is of size: 1
+SCC-22 is of size: 1
+SCC-23 is of size: 1
+SCC-24 is of size: 1
+SCC-25 is of size: 1
+SCC-26 is of size: 1
+SCC-27 is of size: 1
+SCC-28 is of size: 1
+SCC-29 is of size: 1
+SCC-30 is of size: 1
+SCC-31 is of size: 1
+SCC-32 is of size: 1
+SCC-33 is of size: 1
+SCC-34 is of size: 1
+SCC-35 is of size: 1
+SCC-36 is of size: 1
+SCC-37 is of size: 1
+SCC-38 is of size: 1
+SCC-39 is of size: 1
+SCC-40 is of size: 1
+SCC-41 is of size: 1
+SCC-42 is of size: 1
+SCC-43 is of size: 1
+SCC-44 is of size: 1
+SCC-45 is of size: 1
+SCC-46 is of size: 1
+SCC-47 is of size: 1
+SCC-48 is of size: 1
+SCC-49 is of size: 1
+SCC-50 is of size: 1
+SCC-51 is of size: 1
+SCC-52 is of size: 1
+SCC-53 is of size: 1
+SCC-54 is of size: 1
+SCC-55 is of size: 1
+SCC-56 is of size: 1
+SCC-57 is of size: 1
+SCC-58 is of size: 1
+SCC-59 is of size: 1
+SCC-60 is of size: 1
+SCC-61 is of size: 1
+SCC-62 is of size: 1
+SCC-63 is of size: 1
+SCC-64 is of size: 1
+SCC-65 is of size: 1
+SCC-66 is of size: 1
+SCC-67 is of size: 1
+SCC-68 is of size: 1
+SCC-69 is of size: 1
+SCC-70 is of size: 1
+SCC-71 is of size: 1
+SCC-72 is of size: 1
+SCC-73 is of size: 1
+SCC-74 is of size: 1
+SCC-75 is of size: 1
+SCC-76 is of size: 1
+SCC-77 is of size: 1
+SCC-78 is of size: 1
+SCC-79 is of size: 1
+SCC-80 is of size: 1
+SCC-81 is of size: 1
+SCC-82 is of size: 1
+SCC-83 is of size: 1
+SCC-84 is of size: 1
+SCC-85 is of size: 1
+SCC-86 is of size: 1
+SCC-87 is of size: 1
+SCC-88 is of size: 1
+SCC-89 is of size: 1
+SCC-90 is of size: 1
+SCC-91 is of size: 1
+SCC-92 is of size: 1
+SCC-93 is of size: 1
+SCC-94 is of size: 1
+SCC-95 is of size: 1
+SCC-96 is of size: 1
+SCC-97 is of size: 1
+SCC-98 is of size: 1
+SCC-99 is of size: 1
+SCC-100 is of size: 1
+SCC-101 is of size: 1
+SCC-102 is of size: 1
+SCC-103 is of size: 1
+SCC-104 is of size: 1
+SCC-105 is of size: 1
+SCC-106 is of size: 1
+SCC-107 is of size: 1
+SCC-108 is of size: 1
+SCC-109 is of size: 1
+SCC-110 is of size: 1
+SCC-111 is of size: 1
+SCC-112 is of size: 1
+SCC-113 is of size: 1
+SCC-114 is of size: 1
+SCC-115 is of size: 1
+SCC-116 is of size: 2
+SCC-117 is of size: 1
+SCC-118 is of size: 14
+SCC-119 is of size: 1
+SCC-120 is of size: 12
+SCC-121 is of size: 1
+SCC-122 is of size: 1
+SCC-123 is of size: 34
+SCC-124 is of size: 12
+SCC-125 is of size: 2111
+SCC-126 is of size: 47620
+SCC-127 is of size: 87290
+
+------
+
+Creation of Tarjan-graph G'=(V',E'): 2675ms
+|V'|=128
+|E'|=161
+Number of out-edges | Frequency 
+0 | 58
+1 | 38
+2 | 16
+3 | 6
+4 | 3
+5 | 2
+6 | 1
+7 | 1
+11 | 1
+12 | 1
+15 | 1
+
+---------
+
+Prime-labeled graph: 2680ms
+Creation of matrix: 2683ms
 
 G'=(V',E')
 [0: [] 
@@ -396,5 +562,4 @@ Matrix M:
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-BUILD SUCCESSFUL (total time: 4 seconds)
- 
+BUILD SUCCESSFUL (total time: 3 seconds)

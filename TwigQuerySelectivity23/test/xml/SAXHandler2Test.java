@@ -82,4 +82,33 @@ public class SAXHandler2Test {
         }
     }
     
+    
+    @Test
+    public void testGetGraph2() {
+        try {
+            SAXParserFactory parserFactor = SAXParserFactory.newInstance();
+            SAXParser parser = parserFactor.newSAXParser();
+            SAXHandler2 handler = new SAXHandler2();
+            
+            parser.parse(new FileInputStream("../datasets/saxreadertest2.xml"),
+                    handler);
+            handler.nextPhase();
+            parser.parse(new FileInputStream("../datasets/saxreadertest2.xml"),
+                    handler);
+            handler.nextPhase();
+            parser.parse(new FileInputStream("../datasets/saxreadertest2.xml"),
+                    handler);
+            Graph g = handler.getGraph();
+            
+            ArrayList<GraphEdge> a1 = g.getOutNeighbours(1);
+            ArrayList<GraphEdge> a2 = g.getOutNeighbours(2);
+            
+            assertTrue(a1.size() == 2 && (a1.get(0).getRight() == 3 || a1.get(1).getRight() == 3));
+            assertTrue(a2.size() == 1 && (a2.get(0).getRight() == 4));
+            
+            System.out.println(g.toString());
+        } catch (Exception ex) {
+            Logger.getLogger(SAXHandler2Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 }

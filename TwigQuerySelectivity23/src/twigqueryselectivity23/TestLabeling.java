@@ -27,7 +27,7 @@ public class TestLabeling {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        String XMLuri = "../datasets/xmark-sf0.4.xml"; //args[0];
+        String XMLuri = "../datasets/xmark-sf0.05.xml"; //args[0];
         try
         {
             System.out.println("Input file: " + XMLuri);
@@ -45,13 +45,25 @@ public class TestLabeling {
             handler.nextPhase();
             parser.parse(new FileInputStream(XMLuri),
                     handler);
-            Graph g1 = handler.getGraph();   
-            System.out.println("Parsing of graph done after: " + (System.currentTimeMillis()-timestamp) + "ms");
+            
+            System.out.println("Number of custom edges: " + handler.getNumberOfCustomEdges());
+            
+            System.out.println("\n---------\n");
+            
+            Graph g1 = handler.getGraph(); 
+            
+            System.out.println("Parsing of graph G=(V,E) done after: " + (System.currentTimeMillis()-timestamp) + "ms");
             System.out.println("|V|=" + g1.getNodes().size());
             System.out.println("|E|=" + g1.getNumberOfEdges());
             
+            System.out.println("\n---------\n");
+
             Graph g2 = Tarjan.createTarjanGraph(g1);
-            System.out.println("Creation of Tarjan-graph: " + (System.currentTimeMillis()-timestamp) + "ms");
+            System.out.println("Creation of Tarjan-graph G'=(V',E'): " + (System.currentTimeMillis()-timestamp) + "ms");
+            System.out.println("|V'|=" + g2.getNodes().size());
+            System.out.println("|E'|=" + g2.getNumberOfEdges());
+            
+            System.out.println("\n---------\n");
             
             HashMap<Integer, ArrayList<Integer>> A = PrimeLabeler.getPrimeLabeledGraph(g2);
             System.out.println("Prime-labeled graph: " + (System.currentTimeMillis()-timestamp) + "ms");
@@ -72,6 +84,13 @@ public class TestLabeling {
             System.out.println("Matrix M: ");
             M.print();
 
+            HashMap<Integer, Integer> freqList = g2.computeFrequenciesList();
+            
+            System.out.println("Number of out-edges | Frequency ");
+            for(Integer k : freqList.keySet())
+            {
+                System.out.println(k + " | " + freqList.get(k));
+            }            
             
         }
         catch(Exception e)
